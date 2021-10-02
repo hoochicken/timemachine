@@ -39,7 +39,10 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Customers', 'url' => ['/customer/index']],
+            ['label' => 'Customer', 'url' => ['/customer/index']],
+            ['label' => 'Cst Form', 'url' => ['/customer/form']],
+            ['label' => 'Workingtime', 'url' => ['/workingtime/index']],
+            ['label' => 'Wt Form', 'url' => ['/workingtime/form']],
             ['label' => 'Gii', 'url' => ['/gii']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
