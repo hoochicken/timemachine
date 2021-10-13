@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\Expression;
+use yii\data\Sort;
 
 /**
  * This is the model class for table "workingtime".
@@ -71,10 +72,38 @@ class Workingtime extends \yii\db\ActiveRecord
      */
     public static function find()
     {
+        $sort = new Sort([
+            'defaultOrder' => [
+                'date' => SORT_DESC
+            ],
+            'attributes' => [
+                'date' => [
+                    'asc' => ['workingtime.date' => SORT_ASC],
+                    'desc' => ['workingtime.date' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Date',
+                ],
+                'id' => [
+                    'asc' => ['workingtime.id' => SORT_ASC],
+                    'desc' => ['workingtime.id' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Date',
+                ],
+                'company_company' => [
+                    'asc' => ['workingtime.company' => SORT_ASC],
+                    'desc' => ['workingtime.company' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'CompanyCompany',
+                ],
+            ],
+        ]);
+
         $query = new WorkingtimeQuery(get_called_class());
         $expCompanyDesc = new Expression('CONCAT(customer.company , "("  , workingtime.cid , ")")');
-        $query->select(['workingtime.*', 'company_company' => $expCompanyDesc]);
-        $query->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`');
+        $query->select(['workingtime.*', 'company_company' => $expCompanyDesc])
+            ->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`')
+            // ->orderBy('date DESC');
+            ->orderBy($sort->orders);
         return $query;
     }
 }
