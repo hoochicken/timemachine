@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Customer;
+use app\models\CustomerSearch;
 use app\models\Workingtime;
 use app\models\WorkingtimeSearch;
+use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,9 +43,13 @@ class WorkingtimeController extends Controller
         $searchModel = new WorkingtimeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $searchModel = new CustomerSearch();
+        $customerProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'customerProvider' => $customerProvider,
         ]);
     }
 
