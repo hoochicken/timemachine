@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "workingtime".
@@ -10,6 +11,7 @@ use Yii;
  * @property int $woid
  * @property int|null $cid
  * @property string|null $description
+ * @property string|null $company_company
  * @property int $minutes
  * @property string|null $date
  * @property int|null $status
@@ -17,6 +19,8 @@ use Yii;
  */
 class Workingtime extends \yii\db\ActiveRecord
 {
+
+    public $company_company;
     /**
      * {@inheritdoc}
      */
@@ -33,6 +37,7 @@ class Workingtime extends \yii\db\ActiveRecord
         return [
             [['cid', 'minutes', 'status'], 'integer'],
             [['description'], 'string'],
+            [['company_company'], 'string', 'max' => 255],
             [['date'], 'safe'],
             [['invoice_number'], 'string', 'max' => 32],
         ];
@@ -45,7 +50,8 @@ class Workingtime extends \yii\db\ActiveRecord
     {
         return [
             'woid' => 'Woid',
-            'cid' => 'Cid',
+            'cid' => 'Company',
+            'company_company' => 'CompanyDesc',
             'description' => 'Description',
             'minutes' => 'Minutes',
             'date' => 'Date',
@@ -54,12 +60,21 @@ class Workingtime extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function findOne($condition)
+    {
+        return parent::findOne($condition);
+    }
+
     /**
      * {@inheritdoc}
      * @return WorkingtimeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new WorkingtimeQuery(get_called_class());
+        $query = new WorkingtimeQuery(get_called_class());
+        $expCompanyDesc = new Expression('CONCAT(customer.company , "("  , workingtime.cid , ")")');
+        $query->select(['workingtime.*', 'company_company' => $expCompanyDesc]);
+        $query->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`');
+        return $query;
     }
 }

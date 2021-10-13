@@ -17,7 +17,7 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['cid', 'status'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['company', 'surname', 'name', 'addendum', 'street', 'postcode', 'city', 'country', 'description'], 'safe'],
             [['salary'], 'number'],
         ];
@@ -59,7 +59,7 @@ class CustomerSearch extends Customer
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'cid' => $this->cid,
+            'id' => $this->id,
             'salary' => $this->salary,
             'status' => $this->status,
         ]);
