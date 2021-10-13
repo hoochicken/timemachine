@@ -38,11 +38,8 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Customer', 'url' => ['/customer/index']],
-            ['label' => 'Cst Form', 'url' => ['/customer/form']],
             ['label' => 'Workingtime', 'url' => ['/workingtime/index']],
-            ['label' => 'Wt Form', 'url' => ['/workingtime/form']],
             ['label' => 'Gii', 'url' => ['/gii']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
