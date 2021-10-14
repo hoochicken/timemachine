@@ -47,11 +47,15 @@ class WorkingtimeSearch extends Workingtime
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
         // grid filtering conditions
+        $status = 'all' === $this->status ? null : $this->status;
+        if (is_null($this->status)) $this->status = self::STATE_OPEN;
+                
+        // grid filtering conditions
         $query->andFilterWhere([
                 'workingtime.id' => $this->id,
                 'workingtime.cid' => $this->cid,
                 'workingtime.date' => $this->date,
-                'workingtime.status' => !isset($this->status) || self::STATE_OPEN === $this->status || self::STATE_DONE === $this->status || self::STATE_UNKNOWN === $this->status ? $this->status : self::STATE_OPEN,
+                'workingtime.status' => $status ?? self::STATE_OPEN,
             ])
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Workingtime;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -67,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [$searchModel::STATE_OPEN => 'open', $searchModel::STATE_DONE => 'abgerechnet', $searchModel::STATE_UNKNOWN => 'unbekannte 15'],
+                        'status', ['all' => 'alle', Workingtime::STATE_OPEN => 'open', Workingtime::STATE_DONE => 'abgerechnet', Workingtime::STATE_UNKNOWN => 'unbekannte 15'],
                         ['class'=>'form-control', 'prompt' => '']
                     )
                 ],
