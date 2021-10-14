@@ -61,7 +61,7 @@ class CustomerSearch extends Customer
         $query->andFilterWhere([
             'id' => $this->id,
             'salary' => $this->salary,
-            'status' => '' === $this->status || '0' === $this->status || '1' === $this->status ? $this->status : '1',
+            'status' => !isset($this->status) || '' === $this->status || '0' === $this->status || '1' === $this->status ? $this->status : '1',
         ]);
 
         $query->andFilterWhere(['like', 'company', $this->company])
