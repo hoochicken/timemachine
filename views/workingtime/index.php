@@ -1,11 +1,15 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\WorkingtimeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $customerProvider yii\data\ActiveDataProvider */
+
+$customers = $customerProvider->getModels();
 
 $this->title = 'Workingtimes';
 $this->params['breadcrumbs'][] = $this->title;
@@ -27,7 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'id',
             // 'cid',
-            'customer_company',
+            'customer_company' =>
+                [
+                    'label' => 'Kunde (Id)',
+                    'format' => 'ntext',
+                    'attribute'=>'customer_company',
+                    'value' => function($model) {
+                        return $model->customer_company;
+                    },
+                    'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'customer_company',
+                        ArrayHelper::map($customers, 'id', 'company'),
+                            ['class'=>'form-control', 'prompt' => '']
+                    )
+                ],
             'description:ntext',
             'minutes',
             'date',

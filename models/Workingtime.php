@@ -21,7 +21,8 @@ use yii\data\Sort;
 class Workingtime extends \yii\db\ActiveRecord
 {
 
-    public $customer_company;
+    public $customer_company = '';
+
     /**
      * {@inheritdoc}
      */
@@ -78,7 +79,6 @@ class Workingtime extends \yii\db\ActiveRecord
                     'asc' => ['workingtime.company' => SORT_ASC],
                     'desc' => ['workingtime.company' => SORT_DESC],
                     'default' => SORT_ASC,
-                    'label' => 'CompanyCompany',
                 ],
             ],
         ]);

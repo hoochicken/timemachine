@@ -4,7 +4,6 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Workingtime;
 use yii\db\Expression;
 
 /**
@@ -59,7 +58,7 @@ class WorkingtimeSearch extends Workingtime
             ])
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
-            ->andFilterWhere(['like', 'customer.company', $this->customer_company])
+            ->andFilterWhere(['like', 'customer.id', $this->customer_company])
         ;
 
         return $dataProvider;

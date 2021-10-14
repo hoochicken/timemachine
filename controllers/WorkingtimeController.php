@@ -44,7 +44,7 @@ class WorkingtimeController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         $customerModel = new CustomerSearch();
-        $customerProvider = $customerModel->search($this->request->queryParams);
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
