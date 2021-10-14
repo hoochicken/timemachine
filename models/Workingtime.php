@@ -9,7 +9,7 @@ use yii\data\Sort;
 /**
  * This is the model class for table "workingtime".
  *
- * @property int $woid
+ * @property int $id
  * @property int|null $cid
  * @property string|null $description
  * @property string|null $customer_company
@@ -73,47 +73,11 @@ class Workingtime extends \yii\db\ActiveRecord
     {
         $sort = new Sort([
             'attributes' => [
-                'date' => [
-                    'asc' => ['workingtime.date' => SORT_ASC],
-                    'desc' => ['workingtime.date' => SORT_DESC],
-                    'default' => SORT_DESC,
-                    'label' => 'Date',
-                ],
-                'id' => [
-                    'asc' => ['workingtime.id' => SORT_ASC],
-                    'desc' => ['workingtime.id' => SORT_DESC],
-                    'default' => SORT_DESC,
-                    'label' => 'Date',
-                ],
                 'customer_company' => [
                     'asc' => ['workingtime.company' => SORT_ASC],
                     'desc' => ['workingtime.company' => SORT_DESC],
                     'default' => SORT_ASC,
                     'label' => 'CompanyCompany',
-                ],
-                'description' => [
-                    'asc' => ['workingtime.description' => SORT_ASC],
-                    'desc' => ['workingtime.description' => SORT_DESC],
-                    'default' => SORT_ASC,
-                    'label' => 'Description',
-                ],
-                'minutes' => [
-                    'asc' => ['workingtime.minutes' => SORT_ASC],
-                    'desc' => ['workingtime.minutes' => SORT_DESC],
-                    'default' => SORT_ASC,
-                    'label' => 'Description',
-                ],
-                'status' => [
-                    'asc' => ['workingtime.status' => SORT_ASC],
-                    'desc' => ['workingtime.status' => SORT_DESC],
-                    'default' => SORT_ASC,
-                    'label' => 'Status',
-                ],
-                'invoice_number' => [
-                    'asc' => ['workingtime.invoice_number' => SORT_ASC],
-                    'desc' => ['workingtime.invoice_number' => SORT_DESC],
-                    'default' => SORT_ASC,
-                    'label' => 'Rechnungsnummer',
                 ],
             ],
         ]);
@@ -123,7 +87,6 @@ class Workingtime extends \yii\db\ActiveRecord
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc])
             ->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`')
             ->orderBy($sort->orders);
-        ;
         return $query;
     }
 }

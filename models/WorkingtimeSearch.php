@@ -9,30 +9,9 @@ use yii\db\Expression;
 
 /**
  * WorkingtimeSearch represents the model behind the search form of `app\models\Workingtime`.
- *
- * @property int $woid
- * @property int|null $cid
- * @property string|null $description
- * @property string|null $customer_company
- * @property int $minutes
- * @property string|null $date
- * @property int|null $status
- * @property string|null $invoice_number
  */
 class WorkingtimeSearch extends Workingtime
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'cid', 'minutes', 'status'], 'integer'],
-            [['customer_company'], 'string', 'max' => 255],
-            [['description', 'date', 'invoice_number'], 'safe'],
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,16 +50,16 @@ class WorkingtimeSearch extends Workingtime
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
         // grid filtering conditions
-        $query->andFilterWhere(['like', 'workingtime.description', $this->description])
-            ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
-            ->andFilterWhere(['like', 'customer.company', $this->customer_company])
-            ->andFilterWhere([
+        $query->andFilterWhere([
                 'workingtime.id' => $this->id,
                 'workingtime.cid' => $this->cid,
                 'workingtime.minutes' => $this->minutes,
                 'workingtime.date' => $this->date,
                 'workingtime.status' => $this->status,
             ])
+            ->andFilterWhere(['like', 'workingtime.description', $this->description])
+            ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
+            ->andFilterWhere(['like', 'customer.company', $this->customer_company])
         ;
 
         return $dataProvider;
