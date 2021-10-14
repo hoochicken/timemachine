@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'showFooter' => true,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
@@ -60,7 +61,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     )
                 ],
             'description:ntext',
-            'minutes',
+            'minutes' => [
+                'attribute' =>'minutes',
+                'footer' => array_sum(array_map(function($item) {
+                return $item->minutes;
+                }, $dataProvider->getModels()))
+            ],
             'date',
             'status' =>
                 [
