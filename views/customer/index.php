@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'company',
             'surname',
             'name',
-            'addendum',
             'status' =>
                 [
                     'label' => 'Status',

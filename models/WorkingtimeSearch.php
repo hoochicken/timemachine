@@ -52,7 +52,6 @@ class WorkingtimeSearch extends Workingtime
         $query->andFilterWhere([
                 'workingtime.id' => $this->id,
                 'workingtime.cid' => $this->cid,
-                'workingtime.minutes' => $this->minutes,
                 'workingtime.date' => $this->date,
                 'workingtime.status' => $this->status,
             ])
@@ -60,6 +59,17 @@ class WorkingtimeSearch extends Workingtime
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
             ->andFilterWhere(['like', 'customer.id', $this->customer_company])
         ;
+
+        if (is_integer($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);
+        elseif (0 === strpos($this->minutes,'>=') || 0 === strpos($this->minutes,'<=')) {
+            $value = substr($this->minutes,2);
+            $query->andFilterWhere([substr($this->minutes,0, 2), 'workingtime.minutes', $value]);
+        } elseif (0 === strpos($this->minutes,'>') || 0 === strpos($this->minutes,'<')) {
+            $value = substr($this->minutes,1);
+            $query->andFilterWhere([substr($this->minutes,0, 1), 'workingtime.minutes', $value]);
+        }
+
+
 
         return $dataProvider;
     }

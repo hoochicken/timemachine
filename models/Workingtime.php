@@ -37,8 +37,8 @@ class Workingtime extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cid', 'minutes', 'status'], 'integer'],
-            [['description'], 'string'],
+            [['cid', 'status'], 'integer'],
+            [['description', 'minutes'], 'string'],
             [['customer_company'], 'string', 'max' => 255],
             [['date'], 'safe'],
             [['invoice_number'], 'string', 'max' => 32],
