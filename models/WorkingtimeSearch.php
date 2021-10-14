@@ -69,8 +69,6 @@ class WorkingtimeSearch extends Workingtime
             $query->andFilterWhere([substr($this->minutes,0, 1), 'workingtime.minutes', $value]);
         }
 
-
-
         return $dataProvider;
     }
 }

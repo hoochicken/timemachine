@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'company',
             'surname',
@@ -36,18 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [0 => 'gelöscht', 1 => 'aktiv',],
-                        ['class'=>'form-control', 'prompt' => '']
+                        'status', [''=> 'alle', 0 => 'gelöscht', 1 => 'aktiv',],
+                        ['class'=>'form-control', 'prompt' => '', 'value' => '']
                     )
                 ],
-            //'street',
-            //'postcode',
-            //'city',
-            //'country',
-            //'description:ntext',
-            //'salary',
-            //'status',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

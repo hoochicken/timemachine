@@ -85,7 +85,11 @@ class Customer extends \yii\db\ActiveRecord
                     'asc' => ['customer.company' => SORT_ASC],
                     'desc' => ['customer.company' => SORT_DESC],
                     'default' => SORT_ASC,
-                    'label' => 'Date',
+                ],
+                'status' => [
+                    'asc' => ['customer.status' => SORT_ASC],
+                    'desc' => ['customer.status' => SORT_DESC],
+                    'default' => SORT_ASC,
                 ],
             ],
         ]);
