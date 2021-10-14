@@ -63,9 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'minutes' => [
                 'attribute' =>'minutes',
-                'footer' => array_sum(array_map(function($item) {
+                'footer' => round(array_sum(array_map(function($item) {
                 return $item->minutes;
-                }, $dataProvider->getModels()))
+                }, $dataProvider->getModels())) / 60, 2) . ' h'
             ],
             'date',
             'status' =>
