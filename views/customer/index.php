@@ -31,6 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'surname',
             'name',
             'addendum',
+            'status' =>
+                [
+                    'label' => 'Status',
+                    'attribute'=>'status',
+                    'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'status', [0 => 'gelöscht', 1 => 'aktiv',],
+                        ['class'=>'form-control', 'prompt' => '']
+                    )
+                ],
             //'street',
             //'postcode',
             //'city',
