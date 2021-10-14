@@ -49,7 +49,7 @@ class WorkingtimeSearch extends Workingtime
         // grid filtering conditions
         $status = 'all' === $this->status ? null : $this->status;
         if (is_null($this->status)) $this->status = self::STATE_OPEN;
-                
+
         // grid filtering conditions
         $query->andFilterWhere([
                 'workingtime.id' => $this->id,
