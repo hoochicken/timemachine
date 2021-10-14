@@ -72,6 +72,7 @@ class Workingtime extends \yii\db\ActiveRecord
     public static function find()
     {
         $sort = new Sort([
+            'defaultOrder'=> 'date DESC',
             'attributes' => [
                 'customer_company' => [
                     'asc' => ['workingtime.company' => SORT_ASC],
