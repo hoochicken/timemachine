@@ -97,11 +97,10 @@ class Customer extends \yii\db\ActiveRecord
             ],
         ]);
 
-        $query = new WorkingtimeQuery(get_called_class());
+        $query = new CustomerQuery(get_called_class());
         $query->select(['customer.*'])
             ->orderBy($sort->orders);
         ;
         return $query;
-        // return new CustomerQuery(get_called_class());
     }
 }

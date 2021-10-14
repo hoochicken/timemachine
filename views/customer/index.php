@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [Customer::STATE_DELETED => 'gelöscht', Customer::STATE_ACTIVE => 'aktiv', '' => 'alle', ],
+                        'status', ['all' => 'alle', Customer::STATE_DELETED => 'gelöscht', Customer::STATE_ACTIVE => 'aktiv',],
                         ['class'=>'form-control', 'prompt' => '', 'value' => $searchModel->status],
                     ),
                 ],
