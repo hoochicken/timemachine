@@ -23,6 +23,10 @@ class Workingtime extends \yii\db\ActiveRecord
 
     public $customer_company = '';
 
+    const STATE_OPEN = '0';
+    const STATE_DONE = '10';
+    const STATE_UNKNOWN = '15';
+
     /**
      * {@inheritdoc}
      */

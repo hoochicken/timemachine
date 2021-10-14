@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Kunde (Id)',
                     'format' => 'ntext',
-                    'attribute'=>'customer_company',
+                    'attribute' =>'customer_company',
                     'value' => function($model) {
                         return $model->customer_company;
                     },
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [0 => 'open', 10 => 'abgerechnet', 15 => 'unbekannte 15'],
+                        'status', [$searchModel::STATE_OPEN => 'open', $searchModel::STATE_DONE => 'abgerechnet', $searchModel::STATE_UNKNOWN => 'unbekannte 15'],
                         ['class'=>'form-control', 'prompt' => '']
                     )
                 ],

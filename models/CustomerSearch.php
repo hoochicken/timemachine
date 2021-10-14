@@ -58,10 +58,11 @@ class CustomerSearch extends Customer
         }
 
         // grid filtering conditions
+        $stateValid = !isset($this->status) || '' === $this->status || self::STATE_DELETED === $this->status || self::STATE_ACTIVE === $this->status;
         $query->andFilterWhere([
             'id' => $this->id,
             'salary' => $this->salary,
-            'status' => !isset($this->status) || '' === $this->status || '0' === $this->status || '1' === $this->status ? $this->status : '1',
+            'status' => $stateValid ? $this->status : self::STATE_ACTIVE,
         ]);
 
         $query->andFilterWhere(['like', 'company', $this->company])

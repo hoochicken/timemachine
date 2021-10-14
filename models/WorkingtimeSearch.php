@@ -32,11 +32,9 @@ class WorkingtimeSearch extends Workingtime
         $query = Workingtime::find();
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -53,7 +51,7 @@ class WorkingtimeSearch extends Workingtime
                 'workingtime.id' => $this->id,
                 'workingtime.cid' => $this->cid,
                 'workingtime.date' => $this->date,
-                'workingtime.status' => $this->status,
+                'workingtime.status' => !isset($this->status) || self::STATE_OPEN === $this->status || self::STATE_DONE === $this->status || self::STATE_UNKNOWN === $this->status ? $this->status : self::STATE_OPEN,
             ])
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
@@ -61,10 +59,10 @@ class WorkingtimeSearch extends Workingtime
         ;
 
         if (is_integer($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);
-        elseif (0 === strpos($this->minutes,'>=') || 0 === strpos($this->minutes,'<=')) {
+        elseif (str_starts_with($this->minutes,'>=') || str_starts_with($this->minutes,'<=')) {
             $value = substr($this->minutes,2);
             $query->andFilterWhere([substr($this->minutes,0, 2), 'workingtime.minutes', $value]);
-        } elseif (0 === strpos($this->minutes,'>') || 0 === strpos($this->minutes,'<')) {
+        } elseif (str_starts_with($this->minutes,'>') || str_starts_with($this->minutes,'<')) {
             $value = substr($this->minutes,1);
             $query->andFilterWhere([substr($this->minutes,0, 1), 'workingtime.minutes', $value]);
         }

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Customer;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -35,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [''=> 'alle', 0 => 'gelöscht', 1 => 'aktiv',],
-                        ['class'=>'form-control', 'prompt' => '', 'value' => '']
-                    )
+                        'status', [Customer::STATE_DELETED => 'gelöscht', Customer::STATE_ACTIVE => 'aktiv', '' => 'alle', ],
+                        ['class'=>'form-control', 'prompt' => '', 'value' => $searchModel->status],
+                    ),
                 ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
