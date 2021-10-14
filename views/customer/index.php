@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => Html::activeDropDownList(
                         $searchModel,
                         'status', ['all' => 'alle', Customer::STATE_DELETED => 'gelöscht', Customer::STATE_ACTIVE => 'aktiv',],
-                        ['class'=>'form-control', 'prompt' => '', 'value' => $searchModel->status],
+                        ['class'=>'form-control', 'prompt' => ''],
                     ),
                 ],
             ['class' => 'yii\grid\ActionColumn'],
