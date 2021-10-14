@@ -55,11 +55,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'status',
                     'filter' => Html::activeDropDownList(
                         $searchModel,
-                        'status', [0 => 'offen', 10 => 'abgerechnet', 15 => 'unbekannte 15'],
+                        'status', [0 => 'open', 10 => 'abgerechnet', 15 => 'unbekannte 15'],
                         ['class'=>'form-control', 'prompt' => '']
                     )
                 ],
             'invoice_number',
+            'checker' => [
+                'class' => 'yii\grid\CheckboxColumn',
+                // you may configure additional properties here
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
