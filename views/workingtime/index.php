@@ -49,7 +49,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'minutes',
             'date',
-            'status',
+            'status' =>
+                [
+                    'label' => 'Status',
+                    'attribute'=>'status',
+                    'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'status', [0 => 'offen', 10 => 'abgerechnet', 15 => 'unbekannte 15'],
+                        ['class'=>'form-control', 'prompt' => '']
+                    )
+                ],
             'invoice_number',
 
             ['class' => 'yii\grid\ActionColumn'],
