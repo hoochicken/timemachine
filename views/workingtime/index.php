@@ -14,12 +14,24 @@ $customers = $customerProvider->getModels();
 $this->title = 'Workingtimes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<script type="text/javascript">
+    function stack() {
+        let ids = $('#w0').yiiGridView('getSelectedRows');
+        $('#selectedIds').val(ids);
+        return true;
+    }
+</script>
 <div class="workingtime-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Create Workingtime', ['create'], ['class' => 'btn btn-success']) ?>
+
+        <?= Html::beginForm() ?>
+        <?= Html::button('Rechnung stellen', ['onclick' => 'stack()', 'class' => 'btn btn-info']) ?>
+        <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
+        <?= Html::endForm() ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -71,3 +83,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+
