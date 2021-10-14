@@ -3,6 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\data\Sort;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "customer".
@@ -71,6 +75,26 @@ class Customer extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new CustomerQuery(get_called_class());
+
+        $sort = new Sort([
+            'defaultOrder' => [
+                'company' => SORT_ASC
+            ],
+            'attributes' => [
+                'company' => [
+                    'asc' => ['customer.company' => SORT_ASC],
+                    'desc' => ['customer.company' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Date',
+                ],
+            ],
+        ]);
+
+        $query = new WorkingtimeQuery(get_called_class());
+        $query->select(['customer.*'])
+            ->orderBy($sort->orders);
+        ;
+        return $query;
+        // return new CustomerQuery(get_called_class());
     }
 }

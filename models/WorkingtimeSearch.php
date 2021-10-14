@@ -13,7 +13,7 @@ use yii\db\Expression;
  * @property int $woid
  * @property int|null $cid
  * @property string|null $description
- * @property string|null $company_company
+ * @property string|null $customer_company
  * @property int $minutes
  * @property string|null $date
  * @property int|null $status
@@ -28,7 +28,7 @@ class WorkingtimeSearch extends Workingtime
     {
         return [
             [['id', 'cid', 'minutes', 'status'], 'integer'],
-            [['company_company'], 'string', 'max' => 255],
+            [['customer_company'], 'string', 'max' => 255],
             [['description', 'date', 'invoice_number'], 'safe'],
         ];
     }
@@ -68,22 +68,20 @@ class WorkingtimeSearch extends Workingtime
         }
 
         $expCompanyDesc = new Expression('CONCAT(customer.company , " ("  , workingtime.cid , ")")');
-        $query->select(['workingtime.*', 'company_company' => $expCompanyDesc]);
+        $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'workingtime.id' => $this->id,
-            'workingtime.cid' => $this->cid,
-            // 'workingtime.description' => $this->description,
-            // 'customer.company_company' => $this->cid,
-            'workingtime.minutes' => $this->minutes,
-            'workingtime.date' => $this->date,
-            'workingtime.status' => $this->status,
-        ]);
-
         $query->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
-            ->andFilterWhere(['like', 'customer.company', $this->company_company]);
+            ->andFilterWhere(['like', 'customer.company', $this->customer_company])
+            ->andFilterWhere([
+                'workingtime.id' => $this->id,
+                'workingtime.cid' => $this->cid,
+                'workingtime.minutes' => $this->minutes,
+                'workingtime.date' => $this->date,
+                'workingtime.status' => $this->status,
+            ])
+        ;
 
         return $dataProvider;
     }

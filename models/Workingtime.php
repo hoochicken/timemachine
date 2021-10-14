@@ -12,7 +12,7 @@ use yii\data\Sort;
  * @property int $woid
  * @property int|null $cid
  * @property string|null $description
- * @property string|null $company_company
+ * @property string|null $customer_company
  * @property int $minutes
  * @property string|null $date
  * @property int|null $status
@@ -21,7 +21,7 @@ use yii\data\Sort;
 class Workingtime extends \yii\db\ActiveRecord
 {
 
-    public $company_company;
+    public $customer_company;
     /**
      * {@inheritdoc}
      */
@@ -38,7 +38,7 @@ class Workingtime extends \yii\db\ActiveRecord
         return [
             [['cid', 'minutes', 'status'], 'integer'],
             [['description'], 'string'],
-            [['company_company'], 'string', 'max' => 255],
+            [['customer_company'], 'string', 'max' => 255],
             [['date'], 'safe'],
             [['invoice_number'], 'string', 'max' => 32],
         ];
@@ -50,14 +50,13 @@ class Workingtime extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'woid' => 'Woid',
-            'cid' => 'Company',
-            'company_company' => 'CompanyDesc',
-            'description' => 'Description',
-            'minutes' => 'Minutes',
-            'date' => 'Date',
+            'id' => 'Id',
+            'customer_company' => 'Kunde (Id)',
+            'description' => 'Beschreibung',
+            'minutes' => 'Minuten',
+            'date' => 'Datum',
             'status' => 'Status',
-            'invoice_number' => 'Invoice Number',
+            'invoice_number' => 'Rechnungsnummer',
         ];
     }
 
@@ -73,9 +72,6 @@ class Workingtime extends \yii\db\ActiveRecord
     public static function find()
     {
         $sort = new Sort([
-            'defaultOrder' => [
-                'date' => SORT_DESC
-            ],
             'attributes' => [
                 'date' => [
                     'asc' => ['workingtime.date' => SORT_ASC],
@@ -89,21 +85,45 @@ class Workingtime extends \yii\db\ActiveRecord
                     'default' => SORT_DESC,
                     'label' => 'Date',
                 ],
-                'company_company' => [
+                'customer_company' => [
                     'asc' => ['workingtime.company' => SORT_ASC],
                     'desc' => ['workingtime.company' => SORT_DESC],
                     'default' => SORT_ASC,
                     'label' => 'CompanyCompany',
+                ],
+                'description' => [
+                    'asc' => ['workingtime.description' => SORT_ASC],
+                    'desc' => ['workingtime.description' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Description',
+                ],
+                'minutes' => [
+                    'asc' => ['workingtime.minutes' => SORT_ASC],
+                    'desc' => ['workingtime.minutes' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Description',
+                ],
+                'status' => [
+                    'asc' => ['workingtime.status' => SORT_ASC],
+                    'desc' => ['workingtime.status' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Status',
+                ],
+                'invoice_number' => [
+                    'asc' => ['workingtime.invoice_number' => SORT_ASC],
+                    'desc' => ['workingtime.invoice_number' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label' => 'Rechnungsnummer',
                 ],
             ],
         ]);
 
         $query = new WorkingtimeQuery(get_called_class());
         $expCompanyDesc = new Expression('CONCAT(customer.company , "("  , workingtime.cid , ")")');
-        $query->select(['workingtime.*', 'company_company' => $expCompanyDesc])
+        $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc])
             ->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`')
-            // ->orderBy('date DESC');
             ->orderBy($sort->orders);
+        ;
         return $query;
     }
 }
