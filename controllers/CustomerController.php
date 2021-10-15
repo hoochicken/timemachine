@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Customer;
 use app\models\CustomerSearch;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,9 +41,20 @@ class CustomerController extends Controller
         $searchModel = new CustomerSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $query = $dataProvider->query;
+
+        // $query = Article::find()->where(['status' => 1]);
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count()]);
+        $items = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'items' => $items,
+            'pages' => $pages,
         ]);
     }
 
