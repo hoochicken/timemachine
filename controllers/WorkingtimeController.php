@@ -99,12 +99,16 @@ class WorkingtimeController extends Controller
     {
         $model = $this->findModel($id);
 
+        $customerModel = new CustomerSearch();
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'customerProvider' => $customerProvider,
         ]);
     }
 

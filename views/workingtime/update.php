@@ -1,9 +1,11 @@
 <?php
 
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Workingtime */
+/* @var $customerProvider ActiveDataProvider */
 
 $this->title = 'Update Workingtime: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Workingtimes', 'url' => ['index']];
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'customerProvider' => $customerProvider,
     ]) ?>
 
 </div>
