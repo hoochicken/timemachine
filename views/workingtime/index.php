@@ -16,9 +16,14 @@ $this->title = 'Workingtimes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script type="text/javascript">
-    function stack() {
+    function stack(eventTrigger) {
         let ids = $('#w0').yiiGridView('getSelectedRows');
+        if ('' === $('#workingtimesearch-customer_company').val()) {
+            alert('Bitte Kunden für die Rechnung angeben');
+            return false;
+        }
         $('#selectedIds').val(ids);
+        $('#postToInvoice').submit();
         return true;
     }
 </script>
@@ -29,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Workingtime', ['create'], ['class' => 'btn btn-success']) ?>
 
-        <?= Html::beginForm('/index.php?r=invoice%2Fcreate') ?>
-        <?= Html::submitButton('Rechnung stellen', ['onclick' => 'stack()', 'class' => 'btn btn-info']) ?>
+        <?= Html::beginForm('/index.php?r=invoice%2Fcreate', 'post', ['id' => 'postToInvoice']) ?>
+        <?= Html::button('Rechnung stellen', ['onclick' => 'javascript:stack();', 'class' => 'btn btn-info']) ?>
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
         <?= Html::activeDropDownList(
             $searchModel,
