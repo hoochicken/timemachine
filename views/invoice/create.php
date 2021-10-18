@@ -8,6 +8,9 @@ use yii\helpers\Html;
 $this->title = 'Create Invoice';
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+echo '####';
+print_r($_POST);
+echo '####';
 ?>
 <div class="invoice-create">
 

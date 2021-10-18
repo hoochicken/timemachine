@@ -32,6 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::beginForm('/index.php?r=invoice%2Fcreate') ?>
         <?= Html::submitButton('Rechnung stellen', ['onclick' => 'stack()', 'class' => 'btn btn-info']) ?>
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
+        <?= Html::activeDropDownList(
+            $searchModel,
+            'customer_id',
+            ArrayHelper::map($customers, 'id', 'company'),
+            ['class'=>'form-control', 'prompt' => '']
+        ) ?>
         <?= Html::endForm() ?>
     </p>
 
