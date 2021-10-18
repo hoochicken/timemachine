@@ -17,7 +17,13 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'description') ?>
         <?= $form->field($model, 'date') ?>
         <?= $form->field($model, 'invoice_number') ?>
-    
+    <?php /*
+    <?= $form->field($model, 'status')->textInput() ?>
+    Html::activeDropDownList(
+    $searchModel,
+    'status', ['all' => 'alle', Customer::STATE_DELETED => 'gelöscht', Customer::STATE_ACTIVE => 'aktiv',],
+    ['class'=>'form-control', 'prompt' => '']
+    */ ?>
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
         </div>
