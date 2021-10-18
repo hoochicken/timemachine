@@ -29,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Workingtime', ['create'], ['class' => 'btn btn-success']) ?>
 
-        <?= Html::beginForm() ?>
-        <?= Html::button('Rechnung stellen', ['onclick' => 'stack()', 'class' => 'btn btn-info']) ?>
+        <?= Html::beginForm('/index.php?r=invoice%2Fcreate') ?>
+        <?= Html::submitButton('Rechnung stellen', ['onclick' => 'stack()', 'class' => 'btn btn-info']) ?>
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
         <?= Html::endForm() ?>
     </p>
