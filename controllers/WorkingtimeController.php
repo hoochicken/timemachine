@@ -45,6 +45,7 @@ class WorkingtimeController extends Controller
 
         $customerModel = new CustomerSearch();
         $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
+        $customerProvider->getPagination()->setPageSize(0);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

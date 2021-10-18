@@ -43,7 +43,7 @@ class WorkingtimeSearch extends Workingtime
             return $dataProvider;
         }
 
-        $expCompanyDesc = new Expression('CONCAT(customer.company , " ("  , workingtime.cid , ")")');
+        $expCompanyDesc = new Expression('IF (`customer`.`company` != "", CONCAT(`customer`.`company` , " (" , `customer`.`id` , ")"), CONCAT(`customer`.`surname` , ", " , `customer`.`name` , " (" , `customer`.`id` , ")"))');
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
         // grid filtering conditions

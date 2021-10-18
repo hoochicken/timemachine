@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Customer;
+use yii\db\Expression;
 
 /**
  * CustomerSearch represents the model behind the search form of `app\models\Customer`.
@@ -44,7 +45,6 @@ class CustomerSearch extends Customer
         $query = Customer::find();
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,6 +56,9 @@ class CustomerSearch extends Customer
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id` , ")"), CONCAT(`surname` , ", " , `name` , " (" , `id` , ")"))');
+        $query->select(['customer.*', 'company' => $expr]);
 
         // grid filtering conditions
         $status = 'all' === $this->status ? null : $this->status;

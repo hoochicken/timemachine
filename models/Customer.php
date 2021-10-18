@@ -98,7 +98,8 @@ class Customer extends \yii\db\ActiveRecord
         ]);
 
         $query = new CustomerQuery(get_called_class());
-        $query->select(['customer.*'])
+        $expr = new Expression('IF (`company` != "", `company`, CONCAT(`surname` , ", " , `name`))');
+        $query->select(['customer.*', 'company' => $expr])
             ->orderBy($sort->orders);
         ;
         return $query;
