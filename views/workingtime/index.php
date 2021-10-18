@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
         <?= Html::activeDropDownList(
             $searchModel,
-            'customer_id',
+            'customer_company',
             ArrayHelper::map($customers, 'id', 'company'),
             ['class'=>'form-control', 'prompt' => '']
         ) ?>
