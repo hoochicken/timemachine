@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Customer;
+use app\models\CustomerSearch;
 use app\models\Invoice;
 use app\models\InvoiceSearch;
+use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,16 +71,37 @@ class InvoiceController extends Controller
     {
         $model = new Invoice();
 
+        $WorkingtimeSearch = $this->request->post('WorkingtimeSearch');
+
+        $customerId = $WorkingtimeSearch['customer_company'] ?? null;
+        $customerModel = Customer::findOne($customerId);
+
+        $customerModels = new CustomerSearch();
+        $customerProvider = $customerModels->search(['CustomerOptions' => ['status' => 1]]);
+        $customerProvider->getPagination()->setPageSize(0);
+
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
+            $model->setAttribute('customer_id', $customerId);
+            $model->setAttribute('customer_company', $customerModel->company);
+            $model->setAttribute('customer_surname', $customerModel->surname);
+            $model->setAttribute('customer_name', $customerModel->name);
+            $model->setAttribute('customer_addendum', $customerModel->addendum);
+            $model->setAttribute('customer_street', $customerModel->street);
+            $model->setAttribute('customer_postcode', $customerModel->postcode);
+            $model->setAttribute('customer_city', $customerModel->city);
+            $model->setAttribute('customer_country', $customerModel->country);
+            $model->setAttribute('customer_salary', $customerModel->salary);
         } else {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'customerProvider' => $customerProvider,
         ]);
     }
 
