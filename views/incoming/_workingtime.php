@@ -4,6 +4,7 @@ use app\models\Workingtime;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -18,10 +19,20 @@ use yii\widgets\ActiveForm;
         'filterModel' => $workingtimeProvider,
         'showFooter' => true,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
-            'customer_company',
-            'description:ntext',
+            // ['class' => 'yii\grid\SerialColumn'],
+            // 'id',
+            'customer_company' => [
+                'attribute' => 'customer_company',
+                'label' => 'asda',
+                'header' => 'asda',
+            ],
+            // 'cid',
+            'description' => [
+                'attribute' => 'description',
+                'value' => function($model) {
+                    return StringHelper::truncateWords($model->description, 5, '...', true);
+                }
+            ],
             'minutes' => [
                 'attribute' =>'minutes',
                 'footer' => round(array_sum(array_map(function($item) {
@@ -29,15 +40,10 @@ use yii\widgets\ActiveForm;
                         }, $workingtimeProvider->getModels())) / 60, 2) . ' h'
             ],
             'date',
-            'status',
-            'invoice_number',
-            'checker' => [
-                'class' => 'yii\grid\CheckboxColumn',
-                // you may configure additional properties here
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+            // 'status',
+            // 'invoice_number',
+            'checker' => [ 'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => ['checked' => '1']]
+        ]
     ]); ?>
 
 </div>

@@ -6,6 +6,7 @@ use app\models\Customer;
 use app\models\CustomerSearch;
 use app\models\Incoming;
 use app\models\IncomingSearch;
+use app\models\UserSearch;
 use app\models\WorkingtimeSearch;
 use yii\base\BaseObject;
 use yii\data\DataFilter;
@@ -88,16 +89,21 @@ class IncomingController extends Controller
         $customerProvider->getPagination()->setPageSize(0);
 
         $workingtimeModels = new WorkingtimeSearch();
-
         $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')))]);
         $workingtimeProvider->getPagination()->setPageSize(0);
 
+        $userModels = new UserSearch();
+        $userProvider = $userModels->search([]);
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $model->setAttribute('last_update', date('Y-m-d H:i:s'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             $model->setAttribute('cid', $customerId);
-            $model->setAttribute('invoice_date', date('Y-m-d H:i:s'));
+            $model->setAttribute('invoice_date', date('Y-m-d'));
+            $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+            $model->setAttribute('create_date', date('Y-m-d H:i:s'));
             if (false) {
                 $model->setAttribute('customer_id', $customerId);
                 $model->setAttribute('customer_company', $customerModel->company);
@@ -118,6 +124,7 @@ class IncomingController extends Controller
             'model' => $model,
             'customerProvider' => $customerProvider,
             'workingtimeProvider' => $workingtimeProvider,
+            'userProvider' => $userProvider,
         ]);
     }
 
@@ -131,9 +138,9 @@ class IncomingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+            if ($model->save()) return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

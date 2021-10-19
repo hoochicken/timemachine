@@ -1,20 +1,24 @@
 <?php
 
+use app\models\Incoming;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Incoming */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $userProvider \yii\data\ActiveDataProvider */
+$users = $userProvider->getModels();
 ?>
 
 <div class="incoming-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'uid')->textInput() ?>
+    <?= $form->field($model, 'id')->dropDownList(ArrayHelper::map($users, 'id', 'surname'),  ['class'=>'form-control',]) ?>
 
-    <?= $form->field($model, 'paid')->textInput() ?>
+    <?= $form->field($model, 'paid')->dropDownList([Incoming::STATE_PAID_1 => '1', Incoming::STATE_PAID_2 => '2', Incoming::STATE_PAID_0 => '0'],  ['class'=>'form-control',]) ?>
 
     <?= $form->field($model, 'paid_date')->textInput() ?>
 
