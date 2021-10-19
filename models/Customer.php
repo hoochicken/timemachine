@@ -95,6 +95,16 @@ class Customer extends \yii\db\ActiveRecord
                     'desc' => ['customer.status' => SORT_DESC],
                     'default' => SORT_ASC,
                 ],
+                'surname' => [
+                    'asc' => ['customer.surname' => SORT_ASC],
+                    'desc' => ['customer.surname' => SORT_DESC],
+                    'default' => SORT_ASC,
+                ],
+                'name' => [
+                    'asc' => ['customer.name' => SORT_ASC],
+                    'desc' => ['customer.name' => SORT_DESC],
+                    'default' => SORT_ASC,
+                ],
             ],
         ]);
 
@@ -102,7 +112,8 @@ class Customer extends \yii\db\ActiveRecord
         // $expr = new Expression('IF (`company` != "", `company`, CONCAT(`surname` , ", " , `name`))');
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id` , ")"), CONCAT(`surname` , ", " , `name` , " (" , `id` , ")"))');
         $query->select(['customer.*', 'company' => $expr])
-            ->orderBy($sort->orders);
+            ->orderBy($sort->orders)
+        ;
         ;
         return $query;
     }

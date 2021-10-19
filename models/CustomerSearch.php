@@ -61,8 +61,9 @@ class CustomerSearch extends Customer
         $query->select(['customer.*', 'company' => $expr]);
 
         // grid filtering conditions
+        if ('' === $this->status) $this->status = self::STATE_DEFAULT;
         $status = 'all' === $this->status ? null : $this->status;
-        if (is_null($this->status)) $this->status = self::STATE_DEFAULT;
+
         // $stateValid = self::STATE_DELETED === $this->status || self::STATE_ACTIVE === $this->status;
         $query->andFilterWhere([
             'id' => $this->id,
