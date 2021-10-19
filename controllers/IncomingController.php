@@ -6,7 +6,9 @@ use app\models\Customer;
 use app\models\CustomerSearch;
 use app\models\Incoming;
 use app\models\IncomingSearch;
+use app\models\WorkingtimeSearch;
 use yii\base\BaseObject;
+use yii\data\DataFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -76,9 +78,37 @@ class IncomingController extends Controller
     {
         $model = new Incoming();
 
+        $WorkingtimeSearch = $this->request->post('WorkingtimeSearch');
+
+        $customerId = $WorkingtimeSearch['customer_company'] ?? null;
+        $customerModel = Customer::findOne($customerId);
+
+        $customerModels = new CustomerSearch();
+        $customerProvider = $customerModels->search(['CustomerOptions' => ['status' => 1]]);
+        $customerProvider->getPagination()->setPageSize(0);
+
+        $workingtimeModels = new WorkingtimeSearch();
+
+        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')))]);
+        $workingtimeProvider->getPagination()->setPageSize(0);
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
+            }
+            $model->setAttribute('cid', $customerId);
+            $model->setAttribute('invoice_date', date('Y-m-d H:i:s'));
+            if (false) {
+                $model->setAttribute('customer_id', $customerId);
+                $model->setAttribute('customer_company', $customerModel->company);
+                $model->setAttribute('customer_surname', $customerModel->surname);
+                $model->setAttribute('customer_name', $customerModel->name);
+                $model->setAttribute('customer_addendum', $customerModel->addendum);
+                $model->setAttribute('customer_street', $customerModel->street);
+                $model->setAttribute('customer_postcode', $customerModel->postcode);
+                $model->setAttribute('customer_city', $customerModel->city);
+                $model->setAttribute('customer_country', $customerModel->country);
+                $model->setAttribute('customer_salary', $customerModel->salary);
             }
         } else {
             $model->loadDefaultValues();
@@ -86,6 +116,8 @@ class IncomingController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'customerProvider' => $customerProvider,
+            'workingtimeProvider' => $workingtimeProvider,
         ]);
     }
 

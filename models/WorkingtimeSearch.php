@@ -43,6 +43,9 @@ class WorkingtimeSearch extends Workingtime
             return $dataProvider;
         }
 
+        $this->load($params, isset($params['WorkingtimeIds']) ? 'WorkingtimeIds' : null);
+        $selectedIds = $params['WorkingtimeIds'] ?? null;
+
         $expCompanyDesc = new Expression('IF (`customer`.`company` != "", CONCAT(`customer`.`company` , " (" , `customer`.`id` , ")"), CONCAT(`customer`.`surname` , ", " , `customer`.`name` , " (" , `customer`.`id` , ")"))');
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
@@ -60,6 +63,7 @@ class WorkingtimeSearch extends Workingtime
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
             ->andFilterWhere(['like', 'customer.id', $this->customer_company])
+            ->andFilterWhere(['in', 'workingtime.id',  $selectedIds])
         ;
 
         if (is_integer($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);

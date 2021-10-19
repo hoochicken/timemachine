@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Invoice */
+/* @var $workingtimeProvider \yii\data\ActiveDataProvider */
+/* @var $customerProvider \yii\data\ActiveDataProvider */
 
 $this->title = 'Create Invoice';
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
