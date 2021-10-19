@@ -91,6 +91,21 @@ class Workingtime extends \yii\db\ActiveRecord
                     'desc' => ['workingtime.date' => SORT_DESC],
                     'default' => SORT_DESC,
                 ],
+                'minutes' => [
+                    'asc' => ['workingtime.minutes' => SORT_ASC],
+                    'desc' => ['workingtime.minutes' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'description' => [
+                    'asc' => ['workingtime.description' => SORT_ASC],
+                    'desc' => ['workingtime.description' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'status' => [
+                    'asc' => ['workingtime.status' => SORT_ASC],
+                    'desc' => ['workingtime.status' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
             ],
         ]);
 
