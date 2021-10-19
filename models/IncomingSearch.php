@@ -60,6 +60,9 @@ class IncomingSearch extends Incoming
 
         $this->load($params, isset($params['IncomingSearch']) ? 'IncomingSearch' : null);
 
+        $paid = 'all' === $this->paid ? null : $this->paid;
+        if (is_null($this->paid)) $this->paid = self::STATE_PAID_DEFAULT;
+
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , customer.`id` , ")"), CONCAT(customer.`surname` , ", " , customer.`name` , " (" , customer.`id` , ")"))');
         $query
             ->select(['incoming.*', 'customer_desc' => $expr])
@@ -69,7 +72,7 @@ class IncomingSearch extends Incoming
         $query->andFilterWhere([
             'id' => $this->id,
             'uid' => $this->uid,
-            'paid' => $this->paid,
+            'paid' => $paid ?? self::STATE_PAID_DEFAULT,
             'paid_date' => $this->paid_date,
             'cid' => $this->customer_desc,
             'invoice_date' => $this->invoice_date,

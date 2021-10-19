@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Incoming;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -50,7 +51,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             // 'invoice_text:ntext',
             'invoice_date',
-            'paid',
+            'paid' =>
+                [
+                    'label' => 'Bezahlt',
+                    'attribute' => 'paid',
+                    'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'paid', ['all' => 'alle', Incoming::STATE_PAID_1 => '1', Incoming::STATE_PAID_2 => '2', Incoming::STATE_PAID_0 => '0',],
+                        ['class'=>'form-control', 'prompt' => '']
+                    ),
+                ],
             'paid_date',
             // 'uid',
             //'gross',

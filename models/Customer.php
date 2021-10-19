@@ -26,6 +26,7 @@ use yii\db\Expression;
  */
 class Customer extends \yii\db\ActiveRecord
 {
+    const STATE_DEFAULT = '1';
     const STATE_ACTIVE = '1';
     const STATE_DELETED = '0';
 

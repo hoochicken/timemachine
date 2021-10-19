@@ -32,6 +32,11 @@ class Incoming extends \yii\db\ActiveRecord
 {
     public $customer_desc;
 
+    const STATE_PAID_DEFAULT = '1';
+    const STATE_PAID_0 = '0';
+    const STATE_PAID_1 = '1';
+    const STATE_PAID_2 = '2';
+
     /**
      * {@inheritdoc}
      */
