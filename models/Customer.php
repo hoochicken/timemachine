@@ -90,6 +90,11 @@ class Customer extends \yii\db\ActiveRecord
                     'desc' => ['customer.company' => SORT_DESC],
                     'default' => SORT_ASC,
                 ],
+                'id' => [
+                    'asc' => ['customer.id' => SORT_ASC],
+                    'desc' => ['customer.id' => SORT_DESC],
+                    'default' => SORT_ASC,
+                ],
                 'status' => [
                     'asc' => ['customer.status' => SORT_ASC],
                     'desc' => ['customer.status' => SORT_DESC],

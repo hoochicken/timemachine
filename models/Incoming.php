@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\data\Sort;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "incoming".
@@ -95,6 +98,57 @@ class Incoming extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new IncomingQuery(get_called_class());
+        $sort = new Sort([
+            'defaultOrder' => [
+                'id' => SORT_DESC
+            ],
+            'attributes' => [
+                'identifier' => [
+                    'asc' => ['incoming.identifier' => SORT_ASC],
+                    'desc' => ['incoming.identifier' => SORT_DESC],
+                    'default' => SORT_ASC,
+                ],
+                'cid' => [
+                    'asc' => ['incoming.cid' => SORT_ASC],
+                    'desc' => ['incoming.cid' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'id' => [
+                    'asc' => ['incoming.id' => SORT_ASC],
+                    'desc' => ['incoming.id' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'invoice_date' => [
+                    'asc' => ['incoming.invoice_date' => SORT_ASC],
+                    'desc' => ['incoming.invoice_date' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'status' => [
+                    'asc' => ['incoming.status' => SORT_ASC],
+                    'desc' => ['incoming.status' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'gross' => [
+                    'asc' => ['incoming.gross' => SORT_ASC],
+                    'desc' => ['incoming.gross' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'paid' => [
+                    'asc' => ['incoming.paid' => SORT_ASC],
+                    'desc' => ['incoming.paid' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'paid_date' => [
+                    'asc' => ['incoming.paid_date' => SORT_ASC],
+                    'desc' => ['incoming.paid_date' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+            ],
+        ]);
+        $query = new IncomingQuery(get_called_class());
+        $query->select(['incoming.*'])
+            ->orderBy($sort->orders)
+        ;
+        return $query;
     }
 }
