@@ -18,8 +18,9 @@ class IncomingSearch extends Incoming
     public function rules()
     {
         return [
-            [['id', 'uid', 'paid', 'cid', 'tax_value', 'duid'], 'integer'],
-            [['customer_desc', 'paid_date', 'identifier', 'invoice_date', 'note', 'invoice_text', 'dunning_text1', 'dunning_text2', 'dunning_text3', 'last_update', 'create_date'], 'safe'],
+            [['id', 'uid', 'cid', 'tax_value', 'duid'], 'integer'],
+            [['paid_date', 'identifier', 'invoice_date', 'note', 'invoice_text', 'dunning_text1', 'dunning_text2', 'dunning_text3', 'last_update', 'create_date'], 'safe'],
+            [['customer_desc', 'paid', ], 'string'],
             [['gross', 'sales_tax', 'goods_sales'], 'number'],
         ];
     }
@@ -60,8 +61,8 @@ class IncomingSearch extends Incoming
 
         $this->load($params, isset($params['IncomingSearch']) ? 'IncomingSearch' : null);
 
+        if ('' === $this->paid) $this->paid = self::STATE_PAID_DEFAULT;
         $paid = 'all' === $this->paid ? null : $this->paid;
-        if (is_null($this->paid)) $this->paid = self::STATE_PAID_DEFAULT;
 
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , customer.`id` , ")"), CONCAT(customer.`surname` , ", " , customer.`name` , " (" , customer.`id` , ")"))');
         $query
@@ -72,7 +73,7 @@ class IncomingSearch extends Incoming
         $query->andFilterWhere([
             'id' => $this->id,
             'uid' => $this->uid,
-            'paid' => $paid ?? self::STATE_PAID_DEFAULT,
+            'paid' => $paid,
             'paid_date' => $this->paid_date,
             'cid' => $this->customer_desc,
             'invoice_date' => $this->invoice_date,

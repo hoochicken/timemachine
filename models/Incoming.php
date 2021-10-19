@@ -68,7 +68,7 @@ class Incoming extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'uid' => 'Uid',
-            'paid' => 'Paid',
+            'paid' => 'Bezahlt',
             'paid_date' => 'Paid Date',
             'cid' => 'Cid',
             'identifier' => 'Identifier',
