@@ -18,11 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
     function stack(eventTrigger) {
         let ids = $('#w0').yiiGridView('getSelectedRows');
+        $('#selectedIds').val(ids);
         if ('' === $('#workingtimesearch-customer_company').val()) {
             alert('Bitte Kunden für die Rechnung angeben');
             return false;
         }
-        $('#selectedIds').val(ids);
+        if ('' === $('#selectedIds').val()) {
+            alert('Bitte abzurechnende Positionen bestimmen');
+            return false;
+        }
         $('#postToInvoice').submit();
         return true;
     }
@@ -37,6 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::beginForm('/index.php?r=incoming%2Fcreate', 'post', ['id' => 'postToInvoice']) ?>
         <?= Html::button('Rechnung stellen', ['onclick' => 'javascript:stack();', 'class' => 'btn btn-info']) ?>
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
+        <?php /* todo => das searchmodel bewirkt, dass der name/id des fields WorkingtimeSearch[] ist
+        und das erzeugt im Backend den hässlichen Hack; das muss man irgendwann ausbauen
+         */ ?>
         <?= Html::activeDropDownList(
             $searchModel,
             'customer_company',
