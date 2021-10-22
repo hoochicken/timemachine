@@ -84,7 +84,6 @@ class IncomingSearch extends Incoming
             'duid' => $this->duid,
             'last_update' => $this->last_update,
             'create_date' => $this->create_date,
-            // 'customer_desc' => $this->customer_desc,
         ]);
 
         $query->andFilterWhere(['like', 'identifier', $this->identifier])

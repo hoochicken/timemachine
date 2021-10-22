@@ -8,6 +8,7 @@ use app\models\Incoming;
 use app\models\IncomingSearch;
 use app\models\UserSearch;
 use app\models\WorkingtimeSearch;
+use http\Exception;
 use yii\base\BaseObject;
 use yii\data\DataFilter;
 use yii\web\Controller;
@@ -80,6 +81,9 @@ class IncomingController extends Controller
         $model = new Incoming();
 
         $WorkingtimeSearch = $this->request->post('WorkingtimeSearch');
+        $selectedIds = array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')));
+        // @todo this is a hock ... i should not do that!!! to be fixed
+        if (0 === count($selectedIds)) $selectedIds = ['noIdSelected'];
 
         $customerId = $WorkingtimeSearch['customer_company'] ?? null;
         $customerModel = Customer::findOne($customerId);
@@ -89,7 +93,7 @@ class IncomingController extends Controller
         $customerProvider->getPagination()->setPageSize(0);
 
         $workingtimeModels = new WorkingtimeSearch();
-        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')))]);
+        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
         $workingtimeProvider->getPagination()->setPageSize(0);
 
         $userModels = new UserSearch();
@@ -104,18 +108,18 @@ class IncomingController extends Controller
             $model->setAttribute('invoice_date', date('Y-m-d'));
             $model->setAttribute('last_update', date('Y-m-d H:i:s'));
             $model->setAttribute('create_date', date('Y-m-d H:i:s'));
-            if (false) {
-                $model->setAttribute('customer_id', $customerId);
-                $model->setAttribute('customer_company', $customerModel->company);
-                $model->setAttribute('customer_surname', $customerModel->surname);
-                $model->setAttribute('customer_name', $customerModel->name);
-                $model->setAttribute('customer_addendum', $customerModel->addendum);
-                $model->setAttribute('customer_street', $customerModel->street);
-                $model->setAttribute('customer_postcode', $customerModel->postcode);
-                $model->setAttribute('customer_city', $customerModel->city);
-                $model->setAttribute('customer_country', $customerModel->country);
-                $model->setAttribute('customer_salary', $customerModel->salary);
-            }
+
+            $minutes = $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
+
+            $goods_sales = (float) $customerModel->salary * (float) $minutes;
+            $tax_value = 0; // steuersatz
+            $sales_tax = $goods_sales * $tax_value; // steuerbetrag
+            $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
+
+            $model->setAttribute('gross', $gross);
+            $model->setAttribute('tax_value', $tax_value);
+            $model->setAttribute('sales_tax', $sales_tax);
+            $model->setAttribute('goods_sales', $goods_sales);
         } else {
             $model->loadDefaultValues();
         }

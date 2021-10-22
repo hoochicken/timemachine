@@ -33,7 +33,7 @@ use yii\db\Expression;
  */
 class Incoming extends \yii\db\ActiveRecord
 {
-    public string $customer_desc;
+    public ?string $customer_desc = null;
 
     const STATE_PAID_DEFAULT = '1';
     const STATE_PAID_0 = '0';
@@ -55,7 +55,7 @@ class Incoming extends \yii\db\ActiveRecord
     {
         return [
             [['uid', 'paid', 'cid', 'tax_value', 'duid'], 'integer'],
-            [['customer_desc'], 'string'],
+            // [['customer_desc'], 'string'],
             [['paid_date', 'invoice_date', 'last_update', 'create_date'], 'safe'],
             [['gross', 'sales_tax', 'goods_sales'], 'number'],
             [['note', 'invoice_text', 'dunning_text1', 'dunning_text2', 'dunning_text3'], 'string'],
@@ -70,24 +70,24 @@ class Incoming extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'uid' => 'Uid',
+            'uid' => 'Benutzer',
             'paid' => 'Bezahlt',
-            'paid_date' => 'Paid Date',
-            'cid' => 'Cid',
-            'identifier' => 'Identifier',
-            'invoice_date' => 'Invoice Date',
-            'gross' => 'Gross',
-            'tax_value' => 'Tax Value',
-            'sales_tax' => 'Sales Tax',
-            'goods_sales' => 'Goods Sales',
+            'paid_date' => 'Bezahlt-Datum',
+            'cid' => 'Kunde',
+            'identifier' => 'Rechnungsnummer',
+            'invoice_date' => 'Gestellt-Datum',
+            'gross' => 'Brutto (gross)',
+            'tax_value' => 'Steuersatz (tax value)',
+            'sales_tax' => 'MwSt.-Summe (sales tax)',
+            'goods_sales' => 'Netto (goods sales)',
             'note' => 'Note',
             'invoice_text' => 'Invoice Text',
-            'duid' => 'Duid',
-            'dunning_text1' => 'Dunning Text1',
-            'dunning_text2' => 'Dunning Text2',
-            'dunning_text3' => 'Dunning Text3',
-            'last_update' => 'Last Update',
-            'create_date' => 'Create Date',
+            'duid' => 'Mahnung-Id',
+            'dunning_text1' => 'Mahung 1',
+            'dunning_text2' => 'Mahung 2',
+            'dunning_text3' => 'Mahnung 3',
+            'last_update' => 'Änderungsdatum',
+            'create_date' => 'Erstellungsdatum',
             'customer_desc' => 'Kunde (Id) X',
         ];
     }

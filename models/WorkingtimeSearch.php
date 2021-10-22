@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * WorkingtimeSearch represents the model behind the search form of `app\models\Workingtime`.
@@ -76,5 +77,14 @@ class WorkingtimeSearch extends Workingtime
         }
 
         return $dataProvider;
+    }
+
+    function sumUpMinutes($params): float|int
+    {
+        $dataProvider = $this->search($params);
+        $dataProvider->getPagination()->setPageSize(0);
+        $models = $dataProvider->getModels();
+        $minutes = ArrayHelper::map($models, 'id', 'minutes');
+        return array_sum($minutes);
     }
 }
