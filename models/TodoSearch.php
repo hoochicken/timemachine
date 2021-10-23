@@ -17,8 +17,8 @@ class TodoSearch extends Todo
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'done', 'state'], 'integer'],
-            [['title', 'description'], 'safe'],
+            [['id', 'done', 'state'], 'integer'],
+            [['title','customer_id', 'description'], 'safe'],
         ];
     }
 

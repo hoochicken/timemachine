@@ -30,7 +30,6 @@ class Todo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id'], 'required'],
             [['customer_id', 'done', 'state'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 700],
