@@ -11,6 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 $users = $userProvider->getModels();
+$customers = $customerProvider->getModels();
 $this->title = 'Create Incoming';
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -39,6 +40,7 @@ $form = ActiveForm::begin();
             <?= $this->render('_form-basic', [
                 'model' => $model,
                 'userProvider' => $userProvider,
+                'customerProvider' => $customerProvider,
                 'form' => $form,
             ]) ?>
             <?= Html::endTag('div') ?>

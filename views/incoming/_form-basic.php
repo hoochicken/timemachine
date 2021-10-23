@@ -9,11 +9,13 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Incoming */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $userProvider \yii\data\ActiveDataProvider */
+/* @var $customerProvider \yii\data\ActiveDataProvider */
 $users = $userProvider->getModels();
+$customers = $customerProvider->getModels();
 ?>
 <div class="incoming-form">
 
-    <?= $form->field($model, 'cid')->textInput() ?>
+    <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'company'),  ['class'=>'form-control',]) ?>
 
     <?= $form->field($model, 'gross')->textInput(['maxlength' => true]) ?>
 
