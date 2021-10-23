@@ -19,6 +19,8 @@ use yii\db\Expression;
  * @property string|null $identifier
  * @property string|null $invoice_date
  * @property float|null $gross
+ * @property float|null $minutes
+ * @property float|null $minutes_original
  * @property int|null $tax_value
  * @property float|null $sales_tax
  * @property float|null $goods_sales
@@ -57,7 +59,7 @@ class Incoming extends \yii\db\ActiveRecord
             [['uid', 'paid', 'cid', 'tax_value', 'duid'], 'integer'],
             // [['customer_desc'], 'string'],
             [['paid_date', 'invoice_date', 'last_update', 'create_date'], 'safe'],
-            [['gross', 'sales_tax', 'goods_sales'], 'number'],
+            [['gross', 'sales_tax', 'goods_sales', 'minutes', 'minutes_original'], 'number'],
             [['note', 'invoice_text', 'dunning_text1', 'dunning_text2', 'dunning_text3'], 'string'],
             [['identifier'], 'string', 'max' => 255],
         ];
@@ -76,6 +78,8 @@ class Incoming extends \yii\db\ActiveRecord
             'cid' => 'Kunde',
             'identifier' => 'Rechnungsnummer',
             'invoice_date' => 'Gestellt-Datum',
+            'minutes' => 'Zeit anzurechnend (min)',
+            'minutes_original' => 'Zeit erfasst (min)',
             'gross' => 'Brutto (gross)',
             'tax_value' => 'Steuersatz (tax value)',
             'sales_tax' => 'MwSt.-Summe (sales tax)',

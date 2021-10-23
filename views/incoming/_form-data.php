@@ -16,11 +16,13 @@ $users = $userProvider->getModels();
     <?= Html::beginTag('div', ['class' => 'flex-fill col-md-6']) ?>
     <?= $form->field($model, 'identifier')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'invoice_date')->textInput() ?>
+    <?= $form->field($model, 'minutes_original')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'uid')->dropDownList(ArrayHelper::map($users, 'id', 'surname'),  ['class'=>'form-control',]) ?>
     <?= Html::endTag('div'); ?>
     <?= Html::beginTag('div', ['class' => 'flex-fill col-md-6']) ?>
     <?= $form->field($model, 'paid')->dropDownList([Incoming::STATE_PAID_1 => '1', Incoming::STATE_PAID_2 => '2', Incoming::STATE_PAID_0 => '0'],  ['class'=>'form-control',]) ?>
     <?= $form->field($model, 'paid_date')->textInput() ?>
+    <?= $form->field($model, 'minutes')->textInput(['maxlength' => true]) ?>
     <?= Html::endTag('div'); ?>
     <?= Html::endTag('div'); ?>
 </div>

@@ -116,6 +116,8 @@ class IncomingController extends Controller
             $sales_tax = $goods_sales * $tax_value; // steuerbetrag
             $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
 
+            $model->setAttribute('minutes_orignal', $minutes);
+            $model->setAttribute('minutes', $minutes);
             $model->setAttribute('gross', $gross);
             $model->setAttribute('tax_value', $tax_value);
             $model->setAttribute('sales_tax', $sales_tax);

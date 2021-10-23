@@ -21,7 +21,7 @@ class IncomingSearch extends Incoming
             [['id', 'uid', 'cid', 'tax_value', 'duid'], 'integer'],
             [['paid_date', 'identifier', 'invoice_date', 'note', 'invoice_text', 'dunning_text1', 'dunning_text2', 'dunning_text3', 'last_update', 'create_date'], 'safe'],
             [['customer_desc', 'paid', ], 'string'],
-            [['gross', 'sales_tax', 'goods_sales'], 'number'],
+            [['gross', 'sales_tax', 'goods_sales', 'minutes', 'minutes_original'], 'number'],
         ];
     }
 
