@@ -84,8 +84,12 @@ class WorkingtimeController extends Controller
             $model->loadDefaultValues();
         }
 
+        $customerModel = new CustomerSearch();
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
+
         return $this->render('create', [
             'model' => $model,
+            'customerProvider' => $customerProvider,
         ]);
     }
 
