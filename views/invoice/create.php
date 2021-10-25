@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $workingtimeProvider \yii\data\ActiveDataProvider */
 /* @var $customerProvider \yii\data\ActiveDataProvider */
 
-$this->title = 'Create Invoice';
+$this->title = 'Invoice > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Workingtime */
 /* @var $customerProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Create Workingtime';
+$this->title = 'Workingtime > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Workingtimes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

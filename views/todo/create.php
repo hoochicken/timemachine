@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Todo */
 
-$this->title = 'Create Todo';
+$this->title = 'Todo > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Todos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
