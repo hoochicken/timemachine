@@ -11,6 +11,10 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Incoming */
 /* @var $workingtimeProvider yii\data\ActiveDataProvider */
 /* @var $customerProvider yii\data\ActiveDataProvider */
+
+$minutes = array_sum(array_map(function($item) { return $item->minutes; }, $workingtimeProvider->getModels()));
+$hours = round($minutes / 60, 2);
+
 ?>
 <div class="incoming-workingtime-form">
 
@@ -35,9 +39,7 @@ use yii\widgets\ActiveForm;
             ],
             'minutes' => [
                 'attribute' =>'minutes',
-                'footer' => round(array_sum(array_map(function($item) {
-                            return $item->minutes;
-                        }, $workingtimeProvider->getModels())) / 60, 2) . ' h'
+                'footer' => $minutes . ' min (' . $hours . ' h)'
             ],
             'date',
             // 'status',

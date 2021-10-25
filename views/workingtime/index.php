@@ -12,6 +12,10 @@ use yii\grid\GridView;
 
 $customers = $customerProvider->getModels();
 
+$minutes = array_sum(array_map(function($item) { return $item->minutes; }, $dataProvider->getModels()));
+$hours = round($minutes / 60, 2);
+
+
 $this->title = 'Workingtimes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -80,9 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'minutes' => [
                 'attribute' =>'minutes',
-                'footer' => round(array_sum(array_map(function($item) {
-                return $item->minutes;
-                }, $dataProvider->getModels())) / 60, 2) . ' h'
+                'footer' => $minutes . ' min (' . $hours . ' h)'
             ],
             'date',
             'status' =>
