@@ -28,7 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'title',
-            'description',
+            'url' => [
+                'attribute' => 'url',
+                'label' => 'url',
+                'value' => function ($model) { return Html::a(substr($model->url, 0, 100), $model->url, ['target' => '_blank']) . '<br />' . substr($model->description, 0, 100);},
+                'format' => 'raw',
+            ],
             'customer_id',
             'done' => [
                 'attribute' => 'done',

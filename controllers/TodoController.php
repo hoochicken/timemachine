@@ -113,9 +113,9 @@ class TodoController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['index']);
+
+        // return $this->render('update', ['model' => $model,]);
     }
 
     /**
