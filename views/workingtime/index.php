@@ -35,11 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Workingtime', ['create'], ['class' => 'btn btn-success']) ?>
-
-        <?= Html::beginForm('/index.php?r=incoming%2Fcreate', 'post', ['id' => 'postToInvoice']) ?>
-        <?= Html::button('Rechnung stellen', ['onclick' => 'javascript:stack();', 'class' => 'btn btn-info']) ?>
+    <div class="d-flex">
+        <div><?= Html::a('Create Workingtime', ['create'], ['class' => 'btn btn-success']) ?></div>
+        <?= Html::beginForm('/index.php?r=incoming%2Fcreate', 'post', ['id' => 'postToInvoice', 'class' => 'd-flex ml-auto' ]) ?>
         <?= Html::hiddenInput('selectedIds', '', ['class' => 'btn btn-info', 'id' => 'selectedIds']) ?>
         <?php /* todo => das searchmodel bewirkt, dass der name/id des fields WorkingtimeSearch[] ist
         und das erzeugt im Backend den hässlichen Hack; das muss man irgendwann ausbauen
@@ -50,8 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ArrayHelper::map($customers, 'id', 'company'),
             ['class'=>'form-control', 'prompt' => '']
         ) ?>
+        <?= Html::button('Rechnung', ['onclick' => 'javascript:stack();', 'class' => 'btn btn-info']) ?>
         <?= Html::endForm() ?>
-    </p>
+    </div>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
