@@ -11,12 +11,15 @@ use Yii;
  * @property string|null $title
  * @property string|null $description
  * @property string $url
+ * @property string|null $customer_desc
  * @property int|null $customer_id
  * @property int $done
  * @property int $state
  */
 class Todo extends \yii\db\ActiveRecord
 {
+    public $customer_desc = null;
+
     /**
      * {@inheritdoc}
      */

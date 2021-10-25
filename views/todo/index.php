@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,6 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TodoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $customerProvider yii\data\ActiveDataProvider */
+$customers = $customerProvider->getModels();
 
 $this->title = 'Todos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -35,10 +37,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) { return Html::a(substr($model->url, 0, 100), $model->url, ['target' => '_blank']) . '<br />' . substr($model->description, 0, 100);},
                 'format' => 'raw',
             ],
-            'customer_id' => [
-                'attribute' => 'customer_id',
-                'label' => 'Kunde (Id)',
-            ],
+            'customer_id' =>
+                [
+                    'label' => 'Kunde (Id)',
+                    'format' => 'ntext',
+                    'attribute' =>'customer_id',
+                    'value' => function($model) {
+                        return $model->customer_desc ?? '';
+                    },
+                    'filter' => Html::activeDropDownList(
+                        $searchModel,
+                        'customer_id',
+                        ArrayHelper::map($customers, 'id', 'company'),
+                        ['class'=>'form-control', 'prompt' => '']
+                    )
+                ],
             'done' => [
                 'attribute' => 'done',
                 'label' => 'done',

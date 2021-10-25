@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Todo;
+use yii\db\Expression;
 
 /**
  * TodoSearch represents the model behind the search form of `app\models\Todo`.
@@ -56,16 +57,20 @@ class TodoSearch extends Todo
             return $dataProvider;
         }
 
+        $expCompanyDesc = new Expression('IF (`customer`.`company` != "", CONCAT(`customer`.`company` , " (" , `customer`.`id` , ")"), CONCAT(`customer`.`surname` , ", " , `customer`.`name` , " (" , `customer`.`id` , ")"))');
+        $query->select(['todo.*', 'customer_desc' => $expCompanyDesc])
+            ->leftJoin('customer', '`todo`.`customer_id` = `customer`.`id`');
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'done' => $this->done,
-            'state' => $this->state,
+            'todo.id' => $this->id,
+            'todo.customer_id' => $this->customer_id,
+            'todo.done' => $this->done,
+            'todo.state' => $this->state,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'todo.title', $this->title])
+            ->andFilterWhere(['like', 'todo.description', $this->description]);
 
         return $dataProvider;
     }
