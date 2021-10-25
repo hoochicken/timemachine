@@ -16,6 +16,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'url')->textInput() ?>
+
     <?= $form->field($model, 'customer_id')->textInput() ?>
 
     <?= $form->field($model, 'done')->textInput() ?>

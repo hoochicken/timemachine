@@ -32,6 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'description',
+            'url' => [
+                'attribute' => 'url',
+                'label' => 'url',
+                'value' => Html::a($model->url, $model->url, ['target' => '_blank']),
+                'format' => 'raw'
+            ],
             'customer_id',
             'done',
             'state',
