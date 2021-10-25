@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Incoming */
@@ -16,13 +17,12 @@ $this->title = 'Incoming > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin();
-?>
-<?=
-Html::script('
-    
-
-')
-?>
+?>ssssssss
+<script type="text/javascript">
+    function calculateTaxes() {
+        alert("ASD");
+    }
+</script>
 <div class="incoming-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
