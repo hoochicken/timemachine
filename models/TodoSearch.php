@@ -19,7 +19,8 @@ class TodoSearch extends Todo
     {
         return [
             [['id', 'done', 'state'], 'integer'],
-            [['title','customer_id', 'description'], 'safe'],
+            [['title', 'customer_id', 'description'], 'safe'],
+            [['date'], 'safe'],
         ];
     }
 

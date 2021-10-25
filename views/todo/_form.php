@@ -29,6 +29,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'done')->textInput() ?>
 
+    <?= $form->field($model, 'date')->textInput(['disabled' => true]) ?>
+
     <?= $form->field($model, 'state')->textInput() ?>
 
     <div class="form-group d-flex">

@@ -52,9 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class'=>'form-control', 'prompt' => '']
                     )
                 ],
+            'date' => [
+                'attribute' => 'done',
+                'label' => 'Done',
+                'value' => function ($model) { return substr($model->date, 0, 10); }],
             'done' => [
                 'attribute' => 'done',
-                'label' => 'done',
+                'label' => 'Done',
                 'value' => function ($model) { return 1 === (int) $model->done ? Html::tag('span', $model->done, []) : Html::a('done', '/index.php?r=todo/done&id=' . $model->id, ['class' => 'btn btn-info']); },
                 'format' => 'raw',
             ],

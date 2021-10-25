@@ -90,6 +90,9 @@ class TodoController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $model->date = date('Y-m-d H:i:s');
+                $model->save();
+
                 if (1 === (int) $this->request->getBodyParam('saveAndNew')) {
                     return $this->redirect(['create']);
                 }

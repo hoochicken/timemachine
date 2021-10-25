@@ -10,10 +10,11 @@ use Yii;
  * @property int $id
  * @property string|null $title
  * @property string|null $description
- * @property string $url
+ * @property string|null $url
  * @property string|null $customer_desc
  * @property int|null $customer_id
  * @property int $done
+ * @property string $date
  * @property int $state
  */
 class Todo extends \yii\db\ActiveRecord
@@ -38,6 +39,7 @@ class Todo extends \yii\db\ActiveRecord
             [['customer_id', 'done', 'state'], 'integer'],
             [['title', 'url'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 700],
+            [['date'], 'string', 'max' => 20],
         ];
     }
 
@@ -53,6 +55,7 @@ class Todo extends \yii\db\ActiveRecord
             'url' => 'Url',
             'customer_id' => 'Customer ID',
             'done' => 'Done',
+            'date' => 'Datum',
             'state' => 'State',
         ];
     }
