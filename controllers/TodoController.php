@@ -60,6 +60,20 @@ class TodoController extends Controller
     }
 
     /**
+     * Displays a single Todo model.
+     * @param int $id ID
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDone($id, $done = 1)
+    {
+        $model = $this->findModel($id);
+        $model->done = $done;
+        $model->save();
+        return $this->redirect(['index']);
+    }
+
+    /**
      * Creates a new Todo model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed

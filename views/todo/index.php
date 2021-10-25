@@ -30,7 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'description',
             'customer_id',
-            'done',
+            'done' => [
+                'attribute' => 'done',
+                'label' => 'done',
+                'value' => function ($model) { return 1 === (int) $model->done ? Html::tag('span', $model->done, []) : Html::a('done', '/index.php?r=todo/done&id=' . $model->id, ['class' => 'btn btn-info']); },
+                'format' => 'raw',
+            ],
             //'state',
 
             ['class' => 'yii\grid\ActionColumn'],
