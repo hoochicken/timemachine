@@ -117,7 +117,7 @@ class IncomingController extends Controller
         $model->setAttribute('tax_value', $tax_value);
         $model->setAttribute('sales_tax', $sales_tax);
         $model->setAttribute('goods_sales', $goods_sales);
-        
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $model->setAttribute('last_update', date('Y-m-d H:i:s'));

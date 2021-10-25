@@ -17,6 +17,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin();
 ?>
+<?=
+Html::script('
+    
+
+')
+?>
 <div class="incoming-create">
 
     <h1><?= Html::encode($this->title) ?></h1>

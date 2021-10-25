@@ -19,7 +19,7 @@ $customers = $customerProvider->getModels();
 
     <?= $form->field($model, 'gross')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tax_value')->textInput() ?>
+    <?= $form->field($model, 'tax_value')->dropDownList(['0' => '0%', '19' => '19 %', '16' => '16 %',], ['class' => 'form-control']) ?>
 
     <?= $form->field($model, 'sales_tax')->textInput(['maxlength' => true]) ?>
 
