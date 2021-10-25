@@ -1,11 +1,13 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Todo */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $customerProvider \yii\data\ActiveDataProvider */
 ?>
 <div class="todo-form">
 
@@ -23,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'url')->textInput() ?>
 
-    <?= $form->field($model, 'customer_id')->textInput() ?>
+    <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map($customerProvider->getModels(), 'id', 'company'),  ['class'=>'form-control',]) ?>
 
     <?= $form->field($model, 'done')->textInput() ?>
 

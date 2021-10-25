@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\CustomerSearch;
 use app\models\Todo;
 use app\models\TodoSearch;
+use yii\base\BaseObject;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,9 +42,13 @@ class TodoController extends Controller
         $searchModel = new TodoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $customerModel = new CustomerSearch();
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'customerProvider' => $customerProvider,
         ]);
     }
 
@@ -93,9 +99,15 @@ class TodoController extends Controller
             $model->loadDefaultValues();
         }
 
+        $customerModel = new CustomerSearch();
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
+
         return $this->render('create', [
             'model' => $model,
+            'customerProvider' => $customerProvider,
         ]);
+
+        // return $this->render('create', ['model' => $model,]);
     }
 
     /**
@@ -110,12 +122,17 @@ class TodoController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
+            // return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->redirect(['index']);
+        $customerModel = new CustomerSearch();
+        $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
 
-        // return $this->render('update', ['model' => $model,]);
+        return $this->render('update', [
+            'model' => $model,
+            'customerProvider' => $customerProvider,
+        ]);
     }
 
     /**

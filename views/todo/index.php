@@ -6,6 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TodoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $customerProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Todos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) { return Html::a(substr($model->url, 0, 100), $model->url, ['target' => '_blank']) . '<br />' . substr($model->description, 0, 100);},
                 'format' => 'raw',
             ],
-            'customer_id',
+            'customer_id' => [
+                'attribute' => 'customer_id',
+                'label' => 'Kunde (Id)',
+            ],
             'done' => [
                 'attribute' => 'done',
                 'label' => 'done',
