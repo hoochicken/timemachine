@@ -17,7 +17,7 @@ $this->title = 'Incoming > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin();
-?>ssssssss
+?>
 <script type="text/javascript">
     function calculateTaxes() {
         alert("ASD");
