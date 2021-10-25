@@ -99,6 +99,25 @@ class IncomingController extends Controller
         $userModels = new UserSearch();
         $userProvider = $userModels->search([]);
 
+        $model->setAttribute('cid', $customerId);
+        $model->setAttribute('invoice_date', date('Y-m-d'));
+        $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+        $model->setAttribute('create_date', date('Y-m-d H:i:s'));
+
+        $minutes = $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
+
+        $goods_sales = (float) ($customerModel->salary ?? null) * (float) $minutes;
+        $tax_value = 0; // steuersatz
+        $sales_tax = $goods_sales * $tax_value; // steuerbetrag
+        $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
+
+        $model->setAttribute('minutes_original', $minutes);
+        $model->setAttribute('minutes', $minutes);
+        $model->setAttribute('gross', $gross);
+        $model->setAttribute('tax_value', $tax_value);
+        $model->setAttribute('sales_tax', $sales_tax);
+        $model->setAttribute('goods_sales', $goods_sales);
+        
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $model->setAttribute('last_update', date('Y-m-d H:i:s'));
@@ -149,25 +168,6 @@ class IncomingController extends Controller
 
         $userModels = new UserSearch();
         $userProvider = $userModels->search([]);
-
-        $model->setAttribute('cid', $customerId);
-        $model->setAttribute('invoice_date', date('Y-m-d'));
-        $model->setAttribute('last_update', date('Y-m-d H:i:s'));
-        $model->setAttribute('create_date', date('Y-m-d H:i:s'));
-
-        $minutes = $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
-
-        $goods_sales = (float) ($customerModel->salary ?? null) * (float) $minutes;
-        $tax_value = 0; // steuersatz
-        $sales_tax = $goods_sales * $tax_value; // steuerbetrag
-        $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
-
-        $model->setAttribute('minutes_original', $minutes);
-        $model->setAttribute('minutes', $minutes);
-        $model->setAttribute('gross', $gross);
-        $model->setAttribute('tax_value', $tax_value);
-        $model->setAttribute('sales_tax', $sales_tax);
-        $model->setAttribute('goods_sales', $goods_sales);
 
         return $this->render('update', [
             'model' => $model,
