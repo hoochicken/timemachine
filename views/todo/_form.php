@@ -7,10 +7,15 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Todo */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="todo-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+    <div class="form-group d-flex">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success ml-auto mr-2 p-2']) ?>
+        <?= Html::submitButton('Save & New', ['class' => 'btn btn-success p-2', 'onclick' => '$("#saveAndNew").val(1);submit();']) ?>
+        <?= Html::hiddenInput('saveAndNew', 0, ['id' => 'saveAndNew']) ?>
+    </div>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -24,8 +29,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'state')->textInput() ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    <div class="form-group d-flex">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success ml-auto mr-2 p-2']) ?>
+        <?= Html::submitButton('Save & New', ['class' => 'btn btn-success p-2', 'onclick' => '$("#saveAndNew").val(1);submit();']) ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>
