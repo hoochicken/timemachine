@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\Sort;
 
 /**
  * This is the model class for table "todo".
@@ -66,6 +67,34 @@ class Todo extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new TodoQuery(get_called_class());
+        $sort = new Sort([
+            'defaultOrder' => [
+                'date' => SORT_DESC
+            ],
+            'attributes' => [
+                'id' => [
+                    'asc' => ['todo.id' => SORT_ASC],
+                    'desc' => ['todo.id' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'date' => [
+                    'asc' => ['todo.date' => SORT_ASC],
+                    'desc' => ['todo.date' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+                'description' => [
+                    'asc' => ['todo.description' => SORT_ASC],
+                    'desc' => ['todo.description' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+            ],
+        ]);
+
+        $query = new TodoQuery(get_called_class());
+        $query->select(['todo.*'])
+            ->orderBy($sort->orders);
+        return $query;
+
+        // return new TodoQuery(get_called_class());
     }
 }

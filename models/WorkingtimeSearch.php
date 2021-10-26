@@ -62,7 +62,6 @@ class WorkingtimeSearch extends Workingtime
                 'workingtime.status' => $status ?? self::STATE_OPEN,
             ])
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
-            ->andFilterWhere(['like', 'workingtime.invoice_number', $this->invoice_number])
             ->andFilterWhere(['like', 'customer.id', $this->customer_company])
             ->andFilterWhere(['in', 'workingtime.id',  $selectedIds])
         ;
@@ -74,6 +73,16 @@ class WorkingtimeSearch extends Workingtime
         } elseif (str_starts_with($this->minutes,'>') || str_starts_with($this->minutes,'<')) {
             $value = substr($this->minutes,1);
             $query->andFilterWhere([substr($this->minutes,0, 1), 'workingtime.minutes', $value]);
+        }
+
+        if (is_numeric($this->invoice_number)) {
+            $query->andWhere(['or', ['workingtime.invoice_number' => null], ['workingtime.invoice_number' => 0]]);
+        } elseif (str_starts_with($this->invoice_number,'>=') || str_starts_with($this->invoice_number,'<=')) {
+            $value = substr($this->invoice_number,2);
+            $query->andFilterWhere([substr($this->invoice_number,0, 2), 'workingtime.invoice_number', $value]);
+        } elseif (str_starts_with($this->invoice_number,'>') || str_starts_with($this->invoice_number,'<')) {
+            $value = substr($this->invoice_number,1);
+            $query->andFilterWhere([substr($this->invoice_number,0, 1), 'workingtime.invoice_number', $value]);
         }
 
         return $dataProvider;
