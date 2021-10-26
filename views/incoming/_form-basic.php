@@ -25,13 +25,13 @@ $customers = $customerProvider->getModels();
 
     <?= $form->field($model, 'goods_sales')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
-
     <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'last_update')->textInput() ?>
+    <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'create_date')->textInput() ?>
+    <?= $form->field($model, 'last_update')->textInput(['disabled' => true]) ?>
+
+    <?= $form->field($model, 'create_date')->textInput(['disabled' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
