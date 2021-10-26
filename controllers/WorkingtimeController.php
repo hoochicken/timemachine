@@ -40,8 +40,13 @@ class WorkingtimeController extends Controller
      */
     public function actionIndex()
     {
+        $params = $this->request->queryParams;
+        if (!isset($params['WorkingtimeSearch']) || 0 === count($params['WorkingtimeSearch'])) {
+            $params['WorkingtimeSearch'] = ['invoice_number' => '0'];
+        }
+
         $searchModel = new WorkingtimeSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($params);
 
         $customerModel = new CustomerSearch();
         $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);

@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'customer_id')->dropDownList(ArrayHelper::map($customerProvider->getModels(), 'id', 'company'),  ['class'=>'form-control',]) ?>
 
-    <?= $form->field($model, 'done')->textInput() ?>
+    <?= $form->field($model, 'done')->dropDownList([0 => 'Todo', 1 => 'Erledigt'],  ['class'=>'form-control',]) ?>
 
     <?= $form->field($model, 'date')->textInput(['disabled' => true]) ?>
 
