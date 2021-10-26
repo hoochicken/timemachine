@@ -12,7 +12,23 @@ use yii\widgets\ActiveForm;
 /* @var $customerProvider \yii\data\ActiveDataProvider */
 $users = $userProvider->getModels();
 $customers = $customerProvider->getModels();
+echo Html::script('
+    const introtext = "This is a dummie text";
+    const anotherText = "This is a another dummie text";
+    function insertIntrotext() {
+        let text = $("#incoming-invoice_text").val();
+        $("#incoming-invoice_text").val(text + "\n" + introtext);
+    }
+    function insertAnotherText() {
+        let text = $("#incoming-invoice_text").val();
+        $("#incoming-invoice_text").val(text + "\n" + anotherText);
+    }
+', ['type' => 'text/javascript'])
 ?>
+<div>
+    <?= Html::button('Introtext', ['onclick' => 'insertIntrotext()', 'class' => 'btn btn-info']); ?>
+    <?= Html::button('Another Text', ['onclick' => 'insertAnotherText()', 'class' => 'btn btn-info']); ?>
+</div>
 <div class="incoming-form">
 
     <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'company'),  ['class'=>'form-control',]) ?>
