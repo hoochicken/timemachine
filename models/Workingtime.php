@@ -13,6 +13,7 @@ use yii\data\Sort;
  * @property int|null $cid
  * @property string|null $description
  * @property string|null $customer_company
+ * @property float|null $customer_salary
  * @property int $minutes
  * @property string|null $date
  * @property int|null $status
@@ -22,6 +23,7 @@ class Workingtime extends \yii\db\ActiveRecord
 {
 
     public $customer_company = '';
+    public $customer_salary = 0;
 
     const STATE_OPEN = '0';
     const STATE_DONE = '10';
@@ -44,6 +46,7 @@ class Workingtime extends \yii\db\ActiveRecord
             [['cid', 'status'], 'integer'],
             [['description', 'minutes'], 'string'],
             [['customer_company'], 'string', 'max' => 255],
+            [['customer_salary'], 'number'],
             [['date'], 'safe'],
             [['invoice_number'], 'string', 'max' => 32],
         ];
@@ -116,7 +119,7 @@ class Workingtime extends \yii\db\ActiveRecord
 
         $query = new WorkingtimeQuery(get_called_class());
         $expCompanyDesc = new Expression('CONCAT(customer.company , "("  , workingtime.cid , ")")');
-        $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc])
+        $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc, 'customer_salary' => 'customer.salary'])
             ->leftJoin('customer', '`workingtime`.`cid` = `customer`.`id`')
             ->orderBy($sort->orders);
         return $query;

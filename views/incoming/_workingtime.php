@@ -27,8 +27,8 @@ $hours = round($minutes / 60, 2);
             // 'id',
             'customer_company' => [
                 'attribute' => 'customer_company',
-                'label' => 'asda',
-                'header' => 'asda',
+                'label' => 'Kunde',
+                'header' => 'Kunde',
             ],
             // 'cid',
             'description' => [
@@ -39,7 +39,7 @@ $hours = round($minutes / 60, 2);
             ],
             'minutes' => [
                 'attribute' =>'minutes',
-                'footer' => $minutes . ' min (' . $hours . ' h)'
+                'footer' => $minutes . ' min (' . $hours . ' h) <input type="hidden" id="time-sum" value="' . $minutes . '" />',
             ],
             'date',
             // 'status',

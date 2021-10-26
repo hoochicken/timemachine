@@ -104,9 +104,10 @@ class IncomingController extends Controller
         $model->setAttribute('last_update', date('Y-m-d H:i:s'));
         $model->setAttribute('create_date', date('Y-m-d H:i:s'));
 
-        $minutes = $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
+        $minutes = (int) $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
+        $hours = $minutes / 60;
 
-        $goods_sales = (float) ($customerModel->salary ?? null) * (float) $minutes;
+        $goods_sales = (float) ($customerModel->salary ?? null) * (float) $hours;
         $tax_value = 0; // steuersatz
         $sales_tax = $goods_sales * $tax_value; // steuerbetrag
         $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag

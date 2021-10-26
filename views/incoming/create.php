@@ -19,8 +19,24 @@ $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin();
 ?>
 <script type="text/javascript">
+    let salaryByCustomerId = [];
+    <?php foreach ($customers as $customer) echo sprintf('salaryByCustomerId[%s] = %s', $customer->id, $customer->salary) . ';' . "\n"; ?>
     function calculateTaxes() {
-        alert("ASD");
+        // get numbers for calculation
+        let customerId = $('#incoming-cid').val();
+        let stundensatz = salaryByCustomerId[customerId];
+        let arbeitszeit = $('#time-sum').val() / 60;
+        let steuersatz = $('#incoming-tax_value').val() / 100;
+
+        // pre-calculations
+        let netto = arbeitszeit * stundensatz;
+        let steuer = netto * steuersatz;
+        let brutto = netto + steuer;
+
+        // pin to form
+        $('#incoming-goods_sales').val(netto);
+        $('#incoming-sales_tax').val(steuer);
+        $('#incoming-gross').val(brutto);
     }
 </script>
 <div class="incoming-create">
