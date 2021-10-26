@@ -53,13 +53,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     )
                 ],
             'date' => [
-                'attribute' => 'done',
-                'label' => 'Done',
+                'attribute' => 'date',
+                'label' => 'Datum',
                 'value' => function ($model) { return substr($model->date, 0, 10); }],
             'done' => [
                 'attribute' => 'done',
                 'label' => 'Done',
                 'value' => function ($model) { return 1 === (int) $model->done ? Html::tag('span', $model->done, []) : Html::a('done', '/index.php?r=todo/done&id=' . $model->id, ['class' => 'btn btn-info']); },
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'done',
+                    [0 => 'Todo', 1 => 'Erledigt'],
+                    ['class'=>'form-control', 'prompt' => '']
+                ),
                 'format' => 'raw',
             ],
             //'state',
