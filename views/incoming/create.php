@@ -10,6 +10,7 @@ use yii\grid\GridView;
 /* @var $customerProvider \yii\data\ActiveDataProvider */
 /* @var $userProvider \yii\data\ActiveDataProvider */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $update boolean */
 
 $users = $userProvider->getModels();
 $customers = $customerProvider->getModels();
@@ -64,6 +65,7 @@ $form = ActiveForm::begin();
                 'userProvider' => $userProvider,
                 'customerProvider' => $customerProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= Html::endTag('div') ?>
             <?= Html::beginTag('div', ['class' => 'flex-fill col-md-6']) ?>
@@ -71,12 +73,14 @@ $form = ActiveForm::begin();
                 'model' => $model,
                 'userProvider' => $userProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= $this->render('_workingtime', [
                 'model' => $model,
                 'workingtimeProvider' => $workingtimeProvider,
                 'customerProvider' => $customerProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= Html::endTag('div') ?>
             <?= Html::endTag('div') ?>
@@ -86,6 +90,7 @@ $form = ActiveForm::begin();
                 'model' => $model,
                 'userProvider' => $userProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
         </div>
     </div>

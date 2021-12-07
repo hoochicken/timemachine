@@ -11,7 +11,7 @@ use yii\db\Expression;
 /**
  * This is the model class for table "customer".
  *
- * @property int $cid
+ * @property int $id
  * @property string|null $company
  * @property string|null $surname
  * @property string|null $name

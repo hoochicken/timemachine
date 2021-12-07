@@ -10,6 +10,8 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $userProvider \yii\data\ActiveDataProvider */
 /* @var $customerProvider \yii\data\ActiveDataProvider */
+/* @var $update bool */
+$disabled = !$update;
 $users = $userProvider->getModels();
 $customers = $customerProvider->getModels();
 echo Html::script('
@@ -25,31 +27,37 @@ echo Html::script('
     }
 ', ['type' => 'text/javascript'])
 ?>
+<?php if ($update) : ?>
 <div>
     <?= Html::button('Introtext', ['onclick' => 'insertIntrotext()', 'class' => 'btn btn-info']); ?>
     <?= Html::button('Another Text', ['onclick' => 'insertAnotherText()', 'class' => 'btn btn-info']); ?>
 </div>
+<?php endif; ?>
 <div class="incoming-form">
 
-    <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'company'),  ['class'=>'form-control',]) ?>
+    <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'company'),  ['class'=>'form-control', 'disabled' => $disabled,]) ?>
 
-    <?= $form->field($model, 'gross')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gross')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'tax_value')->dropDownList(['0' => '0 %', '19' => '19 %', '16' => '16 %',], ['class' => 'form-control', 'onchange' => 'calculateTaxes()']) ?>
+    <?= $form->field($model, 'tax_value')->dropDownList(['0' => '0 %', '19' => '19 %', '16' => '16 %',], ['class' => 'form-control', 'onchange' => 'calculateTaxes()', 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'sales_tax')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'sales_tax')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'goods_sales')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'goods_sales')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'note')->textarea(['rows' => 6, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'last_update')->textInput(['disabled' => true]) ?>
+    <?= $form->field($model, 'last_update')->textInput(['disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'create_date')->textInput(['disabled' => true]) ?>
+    <?= $form->field($model, 'create_date')->textInput(['disabled' => $disabled]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?php if ($update) : ?>
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        </div>
+    <?php else : ?>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <?php endif; ?>
 </div>

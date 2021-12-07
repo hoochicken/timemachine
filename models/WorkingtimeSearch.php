@@ -36,7 +36,7 @@ class WorkingtimeSearch extends Workingtime
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $this->load($params);
+        $this->load($params, '');
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -44,7 +44,6 @@ class WorkingtimeSearch extends Workingtime
             return $dataProvider;
         }
 
-        $this->load($params, isset($params['WorkingtimeIds']) ? 'WorkingtimeIds' : null);
         $selectedIds = $params['WorkingtimeIds'] ?? null;
 
         $expCompanyDesc = new Expression('IF (`customer`.`company` != "", CONCAT(`customer`.`company` , " (" , `customer`.`id` , ")"), CONCAT(`customer`.`surname` , ", " , `customer`.`name` , " (" , `customer`.`id` , ")"))');
@@ -75,8 +74,10 @@ class WorkingtimeSearch extends Workingtime
             $query->andFilterWhere([substr($this->minutes,0, 1), 'workingtime.minutes', $value]);
         }
 
-        if (is_numeric($this->invoice_number)) {
+        if (is_numeric($this->invoice_number) && ('0' === $this->invoice_number || 0 === $this->invoice_number || is_null($this->invoice_number))) {
             $query->andWhere(['or', ['workingtime.invoice_number' => null], ['workingtime.invoice_number' => 0]]);
+        } elseif (is_numeric($this->invoice_number)) {
+            $query->andWhere(['workingtime.invoice_number' => $this->invoice_number]);
         } elseif (str_starts_with($this->invoice_number,'>=') || str_starts_with($this->invoice_number,'<=')) {
             $value = substr($this->invoice_number,2);
             $query->andFilterWhere([substr($this->invoice_number,0, 2), 'workingtime.invoice_number', $value]);

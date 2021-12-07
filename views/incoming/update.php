@@ -10,9 +10,12 @@ use yii\widgets\ActiveForm;
 /* @var $customerProvider \yii\data\ActiveDataProvider */
 /* @var $userProvider \yii\data\ActiveDataProvider */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $update boolean */
+
+$disabled = !$update;
 
 $users = $userProvider->getModels();
-$this->title = 'Incoming > Update: ' . $model->id;
+$this->title = $update ? 'Incoming > Update: ' . $model->id : 'Incoming > View: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -30,7 +33,13 @@ $form = ActiveForm::begin();
             <a class="nav-link" id="dunning-tab" data-toggle="tab" href="#dunning" role="tab" aria-controls="dunning" aria-selected="false">Mahnung</a>
         </li>
         <li class="nav-item ml-auto p-2" role="presentation">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?php if ($update) : ?>
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                </div>
+            <?php else : ?>
+                <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php endif; ?>
         </li>
     </ul>
 
@@ -43,6 +52,7 @@ $form = ActiveForm::begin();
                 'userProvider' => $userProvider,
                 'customerProvider' => $customerProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= Html::endTag('div') ?>
             <?= Html::beginTag('div', ['class' => 'flex-fill col-md-6']) ?>
@@ -50,12 +60,14 @@ $form = ActiveForm::begin();
                 'model' => $model,
                 'userProvider' => $userProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= $this->render('_workingtime', [
                 'model' => $model,
                 'workingtimeProvider' => $workingtimeProvider,
                 'customerProvider' => $customerProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
             <?= Html::endTag('div') ?>
             <?= Html::endTag('div') ?>
@@ -65,6 +77,7 @@ $form = ActiveForm::begin();
                 'model' => $model,
                 'userProvider' => $userProvider,
                 'form' => $form,
+                'update' => $update,
             ]) ?>
         </div>
     </div>

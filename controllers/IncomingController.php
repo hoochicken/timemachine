@@ -7,6 +7,7 @@ use app\models\CustomerSearch;
 use app\models\Incoming;
 use app\models\IncomingSearch;
 use app\models\UserSearch;
+use app\models\Workingtime;
 use app\models\WorkingtimeSearch;
 use http\Exception;
 use yii\base\BaseObject;
@@ -67,9 +68,11 @@ class IncomingController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->actionUpdate($id, false);
+
+        /* return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+        ]); */
     }
 
     /**
@@ -80,66 +83,62 @@ class IncomingController extends Controller
     public function actionCreate()
     {
         $model = new Incoming();
+        if (!$this->request->isPost) {
+            // exception, that no workingtime entries where selected
+            // $model->loadDefaultValues(); // ??
+        }
 
+        // saving created invoice for the forst time => then got to create
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            // generate entry and redirect to update
+            return $this->actionUpdate($model->id);
+        }
+
+        // get ids of selected workingtimes
         $WorkingtimeSearch = $this->request->post('WorkingtimeSearch');
+        // retrieve data from hidden text field
         $selectedIds = array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')));
-        // @todo this is a hock ... i should not do that!!! to be fixed
         if (0 === count($selectedIds)) $selectedIds = ['noIdSelected'];
 
+        // generate values to be used later on
+        $workingtimeModels = new WorkingtimeSearch();
         $customerId = $WorkingtimeSearch['customer_company'] ?? null;
         $customerModel = Customer::findOne($customerId);
+        $minutes = (int) $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
+        $hours = $minutes / 60;
+        $goods_sales = (float) ($customerModel->salary ?? null) * (float) $hours;
+        $tax_value = 0; // steuersatz
+        $sales_tax = $goods_sales * $tax_value; // steuerbetrag
+        $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
 
+        // these values will be displayed when invoice us first loaded
+        $model->setAttribute('cid', $customerModel->id);
+        $model->setAttribute('invoice_date', date('Y-m-d'));
+        $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+        $model->setAttribute('create_date', date('Y-m-d H:i:s'));
+        $model->setAttribute('gross', $gross);
+        $model->setAttribute('tax_value', $tax_value);
+        $model->setAttribute('sales_tax', $sales_tax);
+        $model->setAttribute('goods_sales', $goods_sales);
+
+        // generate models for select boxes in view
         $customerModels = new CustomerSearch();
         $customerProvider = $customerModels->search(['CustomerOptions' => ['status' => 1]]);
         $customerProvider->getPagination()->setPageSize(0);
 
-        $workingtimeModels = new WorkingtimeSearch();
-        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
-        $workingtimeProvider->getPagination()->setPageSize(0);
-
         $userModels = new UserSearch();
         $userProvider = $userModels->search([]);
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                $model->setAttribute('last_update', date('Y-m-d H:i:s'));
-
-                // save invoice id in workingtime entry
-                $idsToBeMarkedAsDone = $this->request->getBodyParam('selection', []);
-                $workingtimeProvider2 = $workingtimeModels->search(['WorkingtimeIds' => $idsToBeMarkedAsDone]);
-                /** @var $workingtime ActiveRecord */
-                foreach ($workingtimeProvider2->getModels() as $workingtime) {
-                    $workingtime->setAttribute('invoice_number', $model->id);
-                    $workingtime->save(false);
-                }
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            $model->setAttribute('cid', $customerId);
-            $model->setAttribute('invoice_date', date('Y-m-d'));
-            $model->setAttribute('last_update', date('Y-m-d H:i:s'));
-            $model->setAttribute('create_date', date('Y-m-d H:i:s'));
-
-            $minutes = (int) $workingtimeModels->sumUpMinutes(['WorkingtimeIds' => $selectedIds]);
-            $hours = $minutes / 60;
-
-            $goods_sales = (float) ($customerModel->salary ?? null) * (float) $hours;
-            $tax_value = 0; // steuersatz
-            $sales_tax = $goods_sales * $tax_value; // steuerbetrag
-            $gross = $goods_sales + $sales_tax; // gesamter abzurechnender betrag
-
-            $model->setAttribute('gross', $gross);
-            $model->setAttribute('tax_value', $tax_value);
-            $model->setAttribute('sales_tax', $sales_tax);
-            $model->setAttribute('goods_sales', $goods_sales);
-        } else {
-            $model->loadDefaultValues();
-        }
+        $workingtimeModels = new WorkingtimeSearch();
+        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
+        $workingtimeProvider->getPagination()->setPageSize(0);
 
         return $this->render('create', [
             'model' => $model,
             'customerProvider' => $customerProvider,
             'workingtimeProvider' => $workingtimeProvider,
             'userProvider' => $userProvider,
+            'update' => true,
         ]);
     }
 
@@ -150,29 +149,48 @@ class IncomingController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $update = true)
     {
         $model = $this->findModel($id);
+
+        $selectedIds = $this->request->getBodyParam('selection', []);
+        if (0 === count($selectedIds)) $selectedIds = ['impossibleIdToCReateAnEmptyResult'];
+
+        // saving the transferred datra
         if ($this->request->isPost && $model->load($this->request->post())) {
             $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+
+            $workingtimeModels = new WorkingtimeSearch();
+            $workingtimeProvider = $workingtimeModels->search(['invoice_number' => $model->id]);
+            /** @var $workingtime Workingtime */
+
+            foreach ($workingtimeProvider->getModels() as $workingtime) {
+                $invoice_id = in_array($workingtime->id, $selectedIds) ? $model->id : 0;
+                $workingtime->setAttribute('invoice_number', $invoice_id);
+                $workingtime->save(false);
+            }
+            // return $this->redirect(['view', 'id' => $model->id]);
+
             if ($model->save()) return $this->redirect(['view', 'id' => $model->id]);
+            else die('Something went wrong while saving ... and yes, this should be an exception');
         }
 
-        $WorkingtimeSearch = $this->request->post('WorkingtimeSearch');
-        $selectedIds = array_filter(explode(',', $this->request->getBodyParam('selectedIds', '')));
-        // @todo this is a hock ... i should not do that!!! to be fixed
-        if (0 === count($selectedIds)) $selectedIds = ['noIdSelected'];
+        // displaying data
+        // for loading from database
+        if (is_numeric($id) && 0 < $id) {
+            $workingtimeSearch = new WorkingtimeSearch();
+            $workingtimeProvider = $workingtimeSearch->search(['invoice_number' => $id]);
+        } else {
+            // retrieving data from form
+            $workingtimeModels = new WorkingtimeSearch();
+            $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
+        }
+        $workingtimeProvider->getPagination()->setPageSize(0);
 
-        $customerId = $WorkingtimeSearch['customer_company'] ?? null;
-        $customerModel = Customer::findOne($customerId);
-
+        // generate models for select boxes in view
         $customerModels = new CustomerSearch();
         $customerProvider = $customerModels->search(['CustomerOptions' => ['status' => 1]]);
         $customerProvider->getPagination()->setPageSize(0);
-
-        $workingtimeModels = new WorkingtimeSearch();
-        $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
-        $workingtimeProvider->getPagination()->setPageSize(0);
 
         $userModels = new UserSearch();
         $userProvider = $userModels->search([]);
@@ -182,6 +200,7 @@ class IncomingController extends Controller
             'customerProvider' => $customerProvider,
             'workingtimeProvider' => $workingtimeProvider,
             'userProvider' => $userProvider,
+            'update' => $update,
         ]);
     }
 

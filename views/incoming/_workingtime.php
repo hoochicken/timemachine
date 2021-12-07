@@ -11,6 +11,10 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Incoming */
 /* @var $workingtimeProvider yii\data\ActiveDataProvider */
 /* @var $customerProvider yii\data\ActiveDataProvider */
+/* @var $update bool */
+$disabled = !$update;
+
+$m = $workingtimeProvider->getModels();
 
 $minutes = array_sum(array_map(function($item) { return $item->minutes; }, $workingtimeProvider->getModels()));
 $hours = round($minutes / 60, 2);
@@ -44,7 +48,7 @@ $hours = round($minutes / 60, 2);
             'date',
             // 'status',
             // 'invoice_number',
-            'checker' => [ 'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => ['checked' => '1']]
+            'checker' => [ 'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => ['checked' => '1', 'disabled' => $disabled]]
         ]
     ]); ?>
 
