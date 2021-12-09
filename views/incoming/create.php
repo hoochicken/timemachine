@@ -63,6 +63,7 @@ $form = ActiveForm::begin();
             <?= $this->render('_form-basic', [
                 'model' => $model,
                 'userProvider' => $userProvider,
+                'workingtimeProvider' => $workingtimeProvider,
                 'customerProvider' => $customerProvider,
                 'form' => $form,
                 'update' => $update,

@@ -33,6 +33,9 @@ $form = ActiveForm::begin();
             <a class="nav-link" id="dunning-tab" data-toggle="tab" href="#dunning" role="tab" aria-controls="dunning" aria-selected="false">Mahnung</a>
         </li>
         <li class="nav-item ml-auto p-2" role="presentation">
+            <?= Html::a('Print', ['print', 'id' => $model->id], ['class' => 'btn btn-primary', 'target' => '_blank',]) ?>
+        </li>
+        <li class="nav-item ml-auto p-2" role="presentation">
             <?php if ($update) : ?>
                 <div class="form-group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

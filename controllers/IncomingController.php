@@ -6,6 +6,7 @@ use app\models\Customer;
 use app\models\CustomerSearch;
 use app\models\Incoming;
 use app\models\IncomingSearch;
+use app\models\PrintPdf;
 use app\models\UserSearch;
 use app\models\Workingtime;
 use app\models\WorkingtimeSearch;
@@ -202,6 +203,25 @@ class IncomingController extends Controller
             'userProvider' => $userProvider,
             'update' => $update,
         ]);
+    }
+
+    /**
+     * Print an Invoice
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionPrint($id, $update = true)
+    {
+        $incoming = $this->findModel($id);
+        $customer = Customer::findOne($incoming->cid);
+        $printer = new PrintPdf();
+        $printer->setCustomer($customer);
+        $printer->setInvoiceNumber($incoming->identifier);
+        $printer->setInvoiceDate($incoming->invoice_date);
+        $printer->generate($incoming->invoice_text);
+        return $this->actionUpdate($id, $update);
     }
 
     /**
