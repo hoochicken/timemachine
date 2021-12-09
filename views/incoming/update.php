@@ -19,8 +19,20 @@ $this->title = $update ? 'Incoming > Update: ' . $model->id : 'Incoming > View: 
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
-$form = ActiveForm::begin();
 ?>
+<script>
+    function submitForm() {
+        let raw = document.getElementById("invoiceData");
+        let form = raw.cloneNode(true);
+        form.setAttribute('target', '_blank');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/index.php?r=incoming%2Fprintbypost');
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+</script>
+<?php $form = ActiveForm::begin(['id' => 'invoiceData']); ?>
 <div class="incoming-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -33,7 +45,13 @@ $form = ActiveForm::begin();
             <a class="nav-link" id="dunning-tab" data-toggle="tab" href="#dunning" role="tab" aria-controls="dunning" aria-selected="false">Mahnung</a>
         </li>
         <li class="nav-item ml-auto p-2" role="presentation">
-            <?= Html::a('Print', ['print', 'id' => $model->id], ['class' => 'btn btn-primary', 'target' => '_blank',]) ?>
+            <?php if ($update) : ?>
+                <div class="form-group">
+                    <?= Html::button('Print', ['class' => 'btn btn-success', 'onclick' => 'submitForm();return false;']) ?>
+                </div>
+            <?php else : ?>
+                <?= Html::a('Print', ['printbyid', 'id' => $model->id], ['class' => 'btn btn-primary', 'target' => '_blank',]) ?>
+            <?php endif; ?>
         </li>
         <li class="nav-item ml-auto p-2" role="presentation">
             <?php if ($update) : ?>

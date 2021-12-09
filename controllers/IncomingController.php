@@ -153,6 +153,11 @@ class IncomingController extends Controller
     public function actionUpdate($id, $update = true)
     {
         $model = $this->findModel($id);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->setAttribute('last_update', date('Y-m-d H:i:s'));
+            $model->save();
+        }
 
         $selectedIds = $this->request->getBodyParam('selection', []);
         if (0 === count($selectedIds)) $selectedIds = ['impossibleIdToCReateAnEmptyResult'];
@@ -207,21 +212,43 @@ class IncomingController extends Controller
 
     /**
      * Print an Invoice
+     */
+    public function actionPrintbypost()
+    {
+        $post = $this->request->post('Incoming', []);
+        $invoice = new Incoming();
+        $invoice->load($post, '');
+        $customer = Customer::findOne($invoice->cid);
+        $this->printInvoice($invoice, $customer);
+    }
+
+    /**
+     * Print an Invoice
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionPrint($id, $update = true)
+    public function actionPrintbyid($id)
     {
         $incoming = $this->findModel($id);
         $customer = Customer::findOne($incoming->cid);
+        $this->printInvoice($incoming, $customer);
+    }
+
+    /**
+     * Print Invoice
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param Customer $customer
+     * @param Incoming $incoming
+     */
+    private function printInvoice(Incoming $incoming, Customer $customer)
+    {
         $printer = new PrintPdf();
         $printer->setCustomer($customer);
         $printer->setInvoiceNumber($incoming->identifier);
         $printer->setInvoiceDate($incoming->invoice_date);
         $printer->generate($incoming->invoice_text);
-        return $this->actionUpdate($id, $update);
     }
 
     /**

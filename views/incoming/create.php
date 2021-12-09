@@ -17,7 +17,7 @@ $customers = $customerProvider->getModels();
 $this->title = 'Incoming > Create';
 $this->params['breadcrumbs'][] = ['label' => 'Incomings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$form = ActiveForm::begin();
+$form = ActiveForm::begin(['id' => 'invoiceData']);
 ?>
 <script type="text/javascript">
     let salaryByCustomerId = [];
@@ -40,6 +40,18 @@ $form = ActiveForm::begin();
         $('#incoming-gross').val(brutto);
     }
 </script>
+<script>
+    function submitForm() {
+        let raw = document.getElementById("invoiceData");
+        let form = raw.cloneNode(true);
+        form.setAttribute('target', '_blank');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/index.php?r=incoming%2Fprintbypost');
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+</script>
 <div class="incoming-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -50,6 +62,15 @@ $form = ActiveForm::begin();
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="dunning-tab" data-toggle="tab" href="#dunning" role="tab" aria-controls="dunning" aria-selected="false">Mahnung</a>
+        </li>
+        <li class="nav-item ml-auto p-2" role="presentation">
+            <?php if ($update) : ?>
+                <div class="form-group">
+                    <?= Html::button('Print', ['class' => 'btn btn-success', 'onclick' => 'submitForm();return false;']) ?>
+                </div>
+            <?php else : ?>
+                <?= Html::a('Print', ['printbyid', 'id' => $model->id], ['class' => 'btn btn-primary', 'target' => '_blank',]) ?>
+            <?php endif; ?>
         </li>
         <li class="nav-item ml-auto p-2" role="presentation">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -72,7 +72,7 @@ $invoice_text_default = implode("\n", $workingtimesText);
 
     <?= $form->field($model, 'goods_sales')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 
-    <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6, 'disabled' => $disabled, 'value' => $invoice_text_default]) ?>
+    <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6, 'disabled' => $disabled, 'value' => !empty($model->invoice_text) ? $model->invoice_text : $invoice_text_default]) ?>
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6, 'disabled' => $disabled]) ?>
 
