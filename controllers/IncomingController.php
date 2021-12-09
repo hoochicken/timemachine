@@ -245,6 +245,7 @@ class IncomingController extends Controller
     private function printInvoice(Incoming $incoming, Customer $customer)
     {
         $printer = new PrintPdf();
+        $printer->setFilename('rechnung-' . $printer->getCompanyName() . '-' . $incoming->invoice_date . '.pdf');
         $printer->setCustomer($customer);
         $printer->setInvoiceNumber($incoming->identifier);
         $printer->setInvoiceDate($incoming->invoice_date);

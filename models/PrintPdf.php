@@ -26,6 +26,7 @@ class PrintPdf
 
     private string $invoice_date = '';
     private string $invoice_number = '';
+    private string $filename = '';
 
     public function generate(string $invoice_text, string $addendum = '', string $hintergrunds_bild = '')
     {
@@ -87,7 +88,12 @@ class PrintPdf
         $pdf->SetX(10);
         // $pdf->MultiCell(195,0,"$invoice_text",1,1,'L');
         $pdf->MultiCell(187, 5, $invoice_text, 0, 'L');
-        $pdf->Output($this->destination);
+        $pdf->Output($this->destination, $this->filename);
+    }
+
+    public function setFilename(string $value)
+    {
+        $this->filename = $value;
     }
 
     public function setCustomer(Customer $customer)
@@ -113,6 +119,11 @@ class PrintPdf
     public function setCompanyName($value)
     {
         $this->company_name = $value;
+    }
+
+    public function getCompanyName($default = '')
+    {
+        return !empty($this->company_name) ? $this->company_name : $default;
     }
 
     public function setCompanyStreet($value)
