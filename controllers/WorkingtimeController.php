@@ -46,7 +46,7 @@ class WorkingtimeController extends Controller
         }
 
         $searchModel = new WorkingtimeSearch();
-        $dataProvider = $searchModel->search($params);
+        $dataProvider = $searchModel->search($params['WorkingtimeSearch'] ?? []);
 
         $customerModel = new CustomerSearch();
         $customerProvider = $customerModel->search(['CustomerOptions' => ['status' => 1]]);
