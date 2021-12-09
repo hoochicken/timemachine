@@ -51,6 +51,7 @@ $form = ActiveForm::begin();
                 'model' => $model,
                 'userProvider' => $userProvider,
                 'customerProvider' => $customerProvider,
+                'workingtimeProvider' => $workingtimeProvider,
                 'form' => $form,
                 'update' => $update,
             ]) ?>
