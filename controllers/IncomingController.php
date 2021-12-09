@@ -134,7 +134,7 @@ class IncomingController extends Controller
         $workingtimeProvider = $workingtimeModels->search(['WorkingtimeIds' => $selectedIds]);
         $workingtimeProvider->getPagination()->setPageSize(0);
 
-        return $this->render('create', [
+        return $this->render('update', [
             'model' => $model,
             'customerProvider' => $customerProvider,
             'workingtimeProvider' => $workingtimeProvider,
