@@ -36,7 +36,7 @@ class WorkingtimeSearch extends Workingtime
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $this->load($params, '');
+        $this->load($params['WorkingtimeSearch'] ?? [], '');
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -65,7 +65,7 @@ class WorkingtimeSearch extends Workingtime
             ->andFilterWhere(['in', 'workingtime.id',  $selectedIds])
         ;
 
-        if (is_integer($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);
+        if (is_numeric($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);
         elseif (str_starts_with($this->minutes,'>=') || str_starts_with($this->minutes,'<=')) {
             $value = substr($this->minutes,2);
             $query->andFilterWhere([substr($this->minutes,0, 2), 'workingtime.minutes', $value]);

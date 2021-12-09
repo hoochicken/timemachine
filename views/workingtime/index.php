@@ -100,7 +100,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'invoice_number',
             'checker' => [
                 'class' => 'yii\grid\CheckboxColumn',
-                // you may configure additional properties here
+                'checkboxOptions' => function ($model, $key, $index, $column) {
+                    return ['value' => $model->invoice_number > 0 ? 0 : 1, 'disabled' => $model->invoice_number > 0];
+                }
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

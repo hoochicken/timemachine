@@ -23,12 +23,15 @@ use yii\db\Expression;
  * @property string|null $description
  * @property float|null $salary
  * @property int|null $status
+ * @property string|null $companysalary
  */
 class Customer extends \yii\db\ActiveRecord
 {
     const STATE_DEFAULT = '1';
     const STATE_ACTIVE = '1';
     const STATE_DELETED = '0';
+
+    public $companysalary;
 
     /**
      * {@inheritdoc}
@@ -45,6 +48,7 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             [['description'], 'string'],
+            [['companysalary'], 'string'],
             [['salary'], 'number'],
             [['status'], 'integer'],
             [['company', 'name', 'addendum', 'street', 'postcode', 'city', 'country'], 'string', 'max' => 255],
@@ -116,9 +120,9 @@ class Customer extends \yii\db\ActiveRecord
         $query = new CustomerQuery(get_called_class());
         // $expr = new Expression('IF (`company` != "", `company`, CONCAT(`surname` , ", " , `name`))');
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id` , ")"), CONCAT(`surname` , ", " , `name` , " (" , `id` , ")"))');
-        $query->select(['customer.*', 'company' => $expr])
+        $expr2 = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id` , ") ", `salary` , "EUR/h"), CONCAT(`surname` , ", " , `name` , " (" , `id` , ") ", `salary` , "EUR/h"))');
+        $query->select(['customer.*', 'company' => $expr, 'companysalary' => $expr2])
             ->orderBy($sort->orders)
-        ;
         ;
         return $query;
     }

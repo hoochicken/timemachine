@@ -35,7 +35,7 @@ echo Html::script('
 <?php endif; ?>
 <div class="incoming-form">
 
-    <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'company'),  ['class'=>'form-control', 'disabled' => $disabled,]) ?>
+    <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'companysalary'),  ['class'=>'form-control', 'disabled' => $disabled,]) ?>
 
     <?= $form->field($model, 'gross')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 

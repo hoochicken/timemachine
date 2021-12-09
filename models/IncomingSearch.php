@@ -65,8 +65,9 @@ class IncomingSearch extends Incoming
         $paid = 'all' === $this->paid ? null : $this->paid;
 
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , customer.`id` , ")"), CONCAT(customer.`surname` , ", " , customer.`name` , " (" , customer.`id` , ")"))');
+        $expr2 = new Expression('IF (`company` != "", CONCAT(`company` , " (" , customer.`id` , ") " , customer.`salary` , " EUR/h"), CONCAT(customer.`surname` , ", " , customer.`name` , " (" , customer.`id` , ") " , customer.`salary` , " EUR/h"))');
         $query
-            ->select(['incoming.*', 'customer_desc' => $expr])
+            ->select(['incoming.*', 'customer_desc' => $expr, 'companysalary' => $expr2])
             ->leftJoin('customer', '`incoming`.`cid` = `customer`.`id`');
 
         // grid filtering conditions

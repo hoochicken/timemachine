@@ -19,7 +19,7 @@ class CustomerSearch extends Customer
     {
         return [
             [['id', 'status'], 'integer'],
-            [['company', 'surname', 'name', 'addendum', 'street', 'postcode', 'city', 'country', 'description'], 'safe'],
+            [['company', 'companysalary', 'surname', 'name', 'addendum', 'street', 'postcode', 'city', 'country', 'description'], 'safe'],
             [['salary'], 'number'],
         ];
     }
@@ -58,7 +58,8 @@ class CustomerSearch extends Customer
         }
 
         $expr = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id` , ")"), CONCAT(`surname` , ", " , `name` , " (" , `id` , ")"))');
-        $query->select(['customer.*', 'company' => $expr]);
+        $expr2 = new Expression('IF (`company` != "", CONCAT(`company` , " (" , `id`, ") " , `salary` , " EUR/h"), CONCAT(`surname` , ", " , `name` , " (" , `id`, ") " , `salary` , " EUR/h"))');
+        $query->select(['customer.*', 'company' => $expr, 'companysalary' => $expr2]);
 
         // grid filtering conditions
         if ('' === $this->status) $this->status = self::STATE_DEFAULT;
