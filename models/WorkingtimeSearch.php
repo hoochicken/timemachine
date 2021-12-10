@@ -41,7 +41,7 @@ class WorkingtimeSearch extends Workingtime
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-            return $dataProvider;
+            // return $dataProvider;
         }
 
         $selectedIds = $params['WorkingtimeIds'] ?? null;
@@ -50,15 +50,18 @@ class WorkingtimeSearch extends Workingtime
         $query->select(['workingtime.*', 'customer_company' => $expCompanyDesc]);
 
         // grid filtering conditions
-        $status = 'all' === $this->status ? null : $this->status;
-        if (is_null($this->status)) $this->status = self::STATE_OPEN;
+        if ('all' === $this->status) $status = null;
+        elseif (is_null($this->status)) $status = self::STATE_OPEN;
+        else $status = $this->status;
+        // $status = 'all' === $this->status ? null : $this->status;
+        // if (is_null($this->status)) $this->status = self::STATE_OPEN;
 
         // grid filtering conditions
         $query->andFilterWhere([
                 'workingtime.id' => $this->id,
                 'workingtime.cid' => $this->cid,
                 'workingtime.date' => $this->date,
-                'workingtime.status' => $status ?? self::STATE_OPEN,
+                'workingtime.status' => $status // ?? self::STATE_OPEN,
             ])
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'customer.id', $this->customer_company])
