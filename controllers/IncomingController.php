@@ -91,7 +91,16 @@ class IncomingController extends Controller
 
         // saving created invoice for the forst time => then got to create
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $selectedIds = $this->request->getBodyParam('selection', []);
+
+            $workingtimeModels = new WorkingtimeSearch();
+            $workingtimeProvider = $workingtimeModels->search(['id' => $selectedIds]);
+
             // generate entry and redirect to update
+            foreach ($workingtimeProvider->getModels() as $workingtime) {
+                $workingtime->setAttribute('invoice_number', $model->id);
+                $workingtime->save(false);
+            }
             return $this->actionUpdate($model->id);
         }
 

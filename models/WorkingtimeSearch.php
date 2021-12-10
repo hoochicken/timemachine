@@ -51,6 +51,7 @@ class WorkingtimeSearch extends Workingtime
 
         // grid filtering conditions
         if ('all' === $this->status) $status = null;
+        elseif (!isset($this->status)) $status = null;
         elseif (is_null($this->status)) $status = self::STATE_OPEN;
         else $status = $this->status;
 
