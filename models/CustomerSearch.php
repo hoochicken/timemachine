@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Customer;
+use yii\db\conditions\OrCondition;
 use yii\db\Expression;
 
 /**
@@ -73,10 +74,15 @@ class CustomerSearch extends Customer
             'status' => $status ?? self::STATE_DEFAULT,
         ]);
 
-        $query->andFilterWhere(['like', 'company', $this->company])
-            ->andFilterWhere(['like', 'surname', $this->surname])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'addendum', $this->addendum])
+        if (!empty(trim($this->company))) {
+            $query->where(new OrCondition([
+                ['like', 'company', $this->company],
+                ['like', 'surname', $this->company],
+                ['like', 'name', $this->company],
+            ]));
+        }
+
+        $query->andFilterWhere(['like', 'addendum', $this->addendum])
             ->andFilterWhere(['like', 'street', $this->street])
             ->andFilterWhere(['like', 'postcode', $this->postcode])
             ->andFilterWhere(['like', 'city', $this->city])
