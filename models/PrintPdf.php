@@ -62,7 +62,6 @@ class PrintPdf
         $pdf->SetX(-87);
         $pdf->Cell(60, 4, $this->company_url, 0, 1, 'L');
 
-
         $pdf->SetFont($this->fontFont, '', $this->fontSizeSmaller);
         $pdf->SetY(32);
         $pdf->SetX(-76);
@@ -98,6 +97,10 @@ class PrintPdf
 
     public function setCustomer(Customer $customer)
     {
+        foreach($customer as $k => $attribute) {
+            // looks somehow hacky, sry
+            $customer->$k = utf8_decode($customer->$k);
+        }
         $this->customer = $customer;
     }
 
