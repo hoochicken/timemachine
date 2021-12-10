@@ -65,6 +65,7 @@ class WorkingtimeSearch extends Workingtime
             ->andFilterWhere(['like', 'workingtime.description', $this->description])
             ->andFilterWhere(['like', 'customer.id', $this->customer_company])
             ->andFilterWhere(['in', 'workingtime.id',  $selectedIds])
+            ->andFilterWhere(['in', 'workingtime.id',  $params['id'] ?? null])
         ;
 
         if (is_numeric($this->minutes)) $query->andFilterWhere(['workingtime.minutes' => $this->minutes]);

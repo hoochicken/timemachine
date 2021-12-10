@@ -54,12 +54,6 @@ echo Html::script('
 ', ['type' => 'text/javascript']);
 $invoice_text_default = implode("\n", $workingtimesText);
 ?>
-<?php if ($update) : ?>
-<div>
-    <?= Html::button('Introtext', ['onclick' => 'insertIntrotext()', 'class' => 'btn btn-info']); ?>
-    <?= Html::button('Another Text', ['onclick' => 'insertAnotherText()', 'class' => 'btn btn-info']); ?>
-</div>
-<?php endif; ?>
 <div class="incoming-form">
 
     <?= $form->field($model, 'cid')->dropDownList(ArrayHelper::map($customers, 'id', 'companysalary'),  ['class'=>'form-control', 'disabled' => $disabled,]) ?>
@@ -72,6 +66,12 @@ $invoice_text_default = implode("\n", $workingtimesText);
 
     <?= $form->field($model, 'goods_sales')->textInput(['maxlength' => true, 'disabled' => $disabled]) ?>
 
+    <?php if ($update) : ?>
+        <div>
+            <?= Html::button('Introtext', ['onclick' => 'insertIntrotext()', 'class' => 'btn btn-info']); ?>
+            <?= Html::button('Another Text', ['onclick' => 'insertAnotherText()', 'class' => 'btn btn-info']); ?>
+        </div>
+    <?php endif; ?>
     <?= $form->field($model, 'invoice_text')->textarea(['rows' => 6, 'disabled' => $disabled, 'value' => !empty($model->invoice_text) ? $model->invoice_text : $invoice_text_default]) ?>
 
     <?= $form->field($model, 'note')->textarea(['rows' => 6, 'disabled' => $disabled]) ?>
